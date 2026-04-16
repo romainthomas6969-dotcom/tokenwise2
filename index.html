@@ -460,7 +460,7 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
   <div class="landing-hero">
     <div class="landing-badge">Nouveau — Conseiller IA gratuit</div>
     <h1>Trouve la meilleure IA<br><span>pour ton besoin</span></h1>
-    <p>TokenWise compare les 16 grands modèles d'IA et t'aide à choisir le plus adapté à ton projet — avec le coût exact.</p>
+    <p>TokenWise compare les 16 grands modèles d'IA et t'aide à choisir le plus adapté à ton projet — avec le coût exact, sans jargon.</p>
     <div class="landing-ctas">
       <button class="cta-primary" onclick="goPage('advisor')">Conseiller gratuit &#8594;</button>
       <button class="cta-secondary" onclick="goPage('tracker')">Comparatif des prix</button>
@@ -1536,6 +1536,18 @@ function renderPrompts(){
   var catLabels={};CATS.forEach(function(c){catLabels[c.id]=c.label;});
   document.getElementById("prm-grid").innerHTML=list.map(function(p){
     var idx=PROMPTS.indexOf(p);var col=getIAColor(p.ia);
+    // Calculate cost from tok string like "~800 in / ~600 out"
+    var m=MODELS.find(function(x){return x.n===p.ia;})||null;
+    var costStr="";
+    if(m&&p.tok){
+      var parts=p.tok.match(/([\d]+)\s*in.*?([\d]+)\s*out/);
+      if(parts){
+        var inTok=parseInt(parts[1]);
+        var outTok=parseInt(parts[2]);
+        var cost=(inTok/1000000*m.i)+(outTok/1000000*m.o);
+        costStr=cost<0.001?"< $0.001":cost<0.01?"~$"+cost.toFixed(4):"~$"+cost.toFixed(3);
+      }
+    }
     return "<div class=\"prm-card\">"+
       "<div class=\"prm-card-top\">"+
         "<div class=\"prm-card-hdr\">"+
@@ -1546,6 +1558,7 @@ function renderPrompts(){
           "<span style=\"font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;border:1.5px solid "+col+";color:"+col+"\">"+p.ia+"</span>"+
           "<span class=\"tag\" style=\"background:var(--bg3);color:var(--text2)\">"+catLabels[p.cat]+"</span>"+
           "<span style=\"font-size:10px;color:var(--text3)\">"+p.tok+"</span>"+
+          (costStr?"<span style=\"font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--green-bg);color:var(--green)\">"+costStr+" / utilisation</span>":"")+
         "</div>"+
       "</div>"+
       "<div class=\"prm-body\" id=\"pb"+idx+"\">"+p.body+"</div>"+
