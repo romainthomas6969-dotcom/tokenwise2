@@ -6,7 +6,20 @@ export default async function handler(req, res) {
   try {
     const { userMessage } = req.body;
 
-    const systemPrompt = `Tu es un expert en IA et en optimisation de couts. Analyse la demande utilisateur et reponds UNIQUEMENT en JSON valide, sans markdown, sans backticks, sans texte avant ou apres.
+    const systemPrompt = `Tu es un expert en IA et en optimisation de couts. 
+
+REGLE IMPORTANTE: Si la demande ne mentionne pas la frequence d'utilisation (combien de fois par jour/semaine/mois), tu DOIS poser la question dans le champ "question" du JSON au lieu de deviner. Si toutes les infos sont presentes, tu calcules directement.
+
+Reponds UNIQUEMENT en JSON valide, sans markdown, sans backticks, sans texte avant ou apres.
+
+Si des informations manquent (surtout la frequence), retourne ce JSON:
+{
+  "needs_clarification": true,
+  "question": "Ta question simple et claire pour obtenir l'info manquante",
+  "partial_summary": "Ce que tu as compris de la demande"
+}
+
+Si toutes les infos sont presentes, retourne le JSON complet habituel avec needs_clarification: false.
 
 Les modeles disponibles avec leurs prix par million de tokens:
 - Claude Haiku 4.5 (Anthropic, rapide): input $1.00, output $5.00 - Force: taches repetitives, extraction, chatbot
