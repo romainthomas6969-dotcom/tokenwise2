@@ -136,6 +136,7 @@ textarea#ui::placeholder{color:var(--text3)}
 .rec.rec-clickable{cursor:pointer}
 .rec.rec-clickable:hover{box-shadow:var(--shadow-md);border-color:var(--border2);transform:translateY(-1px)}
 .rec.best{border-color:var(--accent);background:var(--accent-bg);box-shadow:0 0 0 1px var(--accent)}
+.rec.rec-selected{border-color:var(--accent);background:var(--accent-bg);box-shadow:0 0 0 2px var(--accent)}
 .rec-detail{background:var(--bg2);border:1.5px solid var(--accent);border-radius:12px;padding:18px;margin-top:10px;animation:fadeIn 0.2s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 .rd-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
@@ -288,7 +289,6 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
   <div class="nav-links">
     <button class="nav-btn" id="btn-advisor" onclick="goPage('advisor')">Conseiller</button>
     <button class="nav-btn active" id="btn-tracker" onclick="goPage('tracker')"><span class="dot"></span>Prix</button>
-    <button class="nav-btn" id="btn-simulator" onclick="goPage('simulator')">Simulateur</button>
     <button class="nav-btn" id="btn-tokens" onclick="goPage('tokens')">Les tokens</button>
     <button class="nav-btn" id="btn-prompts" onclick="goPage('prompts')">Prompts</button>
   </div>
@@ -391,70 +391,6 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
     </div>
     <div class="tbl-wrap">
       <table><thead><tr><th>Modele</th><th>Fournisseur</th><th>Niveau</th><th>Input /M</th><th>Output /M</th><th>Ratio</th><th>Comparatif</th></tr></thead><tbody id="t-body"></tbody></table>
-    </div>
-  </div>
-</div>
-
-<!-- SIMULATEUR -->
-<div class="page" id="page-simulator">
-  <div class="sim-wrap">
-    <div class="slabel">Calcul de couts</div>
-    <h2>Combien ca va me couter ?</h2>
-    <p>Reponds aux questions ci-dessous. On calcule ton budget IA mensuel.</p>
-    <div class="sim-qs">
-      <div class="sim-q">
-        <div class="sq-lbl">1 - Que veux-tu faire ? <span class="tag tb" style="font-size:10px;margin-left:4px">Plusieurs choix possibles</span></div>
-        <div class="sq-hint">Coche tout ce qui correspond a ton usage</div>
-        <div class="sim-opts" data-g="task" data-multi="true">
-          <div class="sopt" data-v="chat" onclick="sp(this)">Repondre a des messages clients</div>
-          <div class="sopt" data-v="resume" onclick="sp(this)">Lire et resumer des documents</div>
-          <div class="sopt" data-v="extract" onclick="sp(this)">Extraire des infos de factures</div>
-          <div class="sopt" data-v="write" onclick="sp(this)">Rediger du contenu ou des emails</div>
-          <div class="sopt" data-v="code" onclick="sp(this)">Generer ou corriger du code</div>
-          <div class="sopt" data-v="analyze" onclick="sp(this)">Analyser des donnees complexes</div>
-          <div class="sopt" data-v="translate" onclick="sp(this)">Traduire des textes</div>
-          <div class="sopt" data-v="classify" onclick="sp(this)">Trier et classer des informations</div>
-        </div>
-      </div>
-      <div class="sim-q">
-        <div class="sq-lbl">2 - A quelle frequence ?</div>
-        <div class="sq-hint">Pense a ton usage sur un mois complet</div>
-        <div class="sim-opts" data-g="volume">
-          <div class="sopt" data-v="30" onclick="sp(this)">Quelques fois par semaine</div>
-          <div class="sopt" data-v="300" onclick="sp(this)">Plusieurs fois par jour au travail</div>
-          <div class="sopt" data-v="3000" onclick="sp(this)">Des centaines de fois par jour</div>
-          <div class="sopt" data-v="30000" onclick="sp(this)">Des milliers de fois par jour</div>
-          <div class="sopt" data-v="300000" onclick="sp(this)">Des dizaines de milliers par jour</div>
-        </div>
-      </div>
-      <div class="sim-q">
-        <div class="sq-lbl">3 - Taille du texte que tu envoies ?</div>
-        <div class="sq-hint">Le texte que toi tu donnes a chaque fois</div>
-        <div class="sim-opts" data-g="isize">
-          <div class="sopt" data-v="tiny" onclick="sp(this)">Un message court</div>
-          <div class="sopt" data-v="small" onclick="sp(this)">Un email ou une page</div>
-          <div class="sopt" data-v="medium" onclick="sp(this)">Un document de 5 a 20 pages</div>
-          <div class="sopt" data-v="large" onclick="sp(this)">Un long document de plus de 50 pages</div>
-        </div>
-      </div>
-      <div class="sim-q">
-        <div class="sq-lbl">4 - Quelle qualite as-tu besoin ?</div>
-        <div class="sq-hint">Plus la qualite est elevee, plus cela coute cher</div>
-        <div class="sim-opts" data-g="quality">
-          <div class="sopt" data-v="fast" onclick="sp(this)">Rapide et economique, quelques imprecisions ok</div>
-          <div class="sopt" data-v="balanced" onclick="sp(this)">Bonne qualite, livrable a un client</div>
-          <div class="sopt" data-v="powerful" onclick="sp(this)">Expertise maximale, zero erreur toleree</div>
-        </div>
-      </div>
-    </div>
-    <button class="sim-cta" onclick="runSim()">Calculer mon budget mensuel</button>
-    <div class="sim-res" id="sim-res">
-      <div class="sim-res-hdr">
-        <div><h3 id="sim-best-name">Meilleur choix</h3><div style="font-size:11px;color:var(--green);margin-top:1px" id="sim-best-sub"></div></div>
-        <div class="sim-res-cost" id="sim-best-cost">--</div>
-      </div>
-      <div style="overflow-x:auto"><table class="res-tbl"><thead><tr><th>#</th><th>Modele</th><th>Cout/mois</th><th>Economie</th><th>Comparatif</th></tr></thead><tbody id="sim-body"></tbody></table></div>
-      <div style="padding:11px 14px;border-top:1px solid var(--border)"><button class="btn-sec" onclick="resetSim()">Recommencer</button></div>
     </div>
   </div>
 </div>
@@ -873,7 +809,7 @@ function showAIResult(r){
   document.getElementById("recs").innerHTML=recos.map(function(rec,i){
     var m=MODELS.find(function(x){return x.n===rec.model;})||MODELS[0];
     var sv=maxAICost>0&&i>0?((1-rec.monthly_cost/maxAICost)*100).toFixed(0):0;
-    return "<div class=\"rec rec-clickable"+(i===0?" best":"")+"\" onclick=\"showRecDetail("+i+")\">"+"<div class=\"rn"+(i===0?" g":"")+"\">"+( i===0?"&#9733;":i+1)+"</div>"+
+    return "<div class=\"rec rec-clickable"+(i===0?" best rec-selected":"")+"\" onclick=\"showRecDetail("+i+")\">"+"<div class=\"rn"+(i===0?" g":"")+"\">"+( i===0?"&#9733;":i+1)+"</div>"+
       "<div style=\"flex:1\"><div class=\"rm\">"+m.n+"</div><div class=\"rp2\">"+m.p+" - "+TL[m.t]+"</div>"+
       "<div class=\"rtags\"><span class=\"rtag\">"+rec.why+"</span></div></div>"+
       "<div class=\"rright\"><div class=\"rcost\">"+fb(rec.monthly_cost)+"</div><div class=\"runit\">par mois</div>"+(sv>0?"<div class=\"rsave\">-"+sv+"% d economie</div>":"")+
@@ -925,6 +861,9 @@ function showLocalResult(r){
 }
 
 function showRecDetail(idx){
+  document.querySelectorAll(".rec").forEach(function(r){r.classList.remove("best");r.classList.remove("rec-selected");});
+  var cards=document.querySelectorAll(".rec");
+  if(cards[idx]){cards[idx].classList.add("rec-selected");}
   var existing=document.getElementById("rec-detail-box");
   if(existing){existing.remove();}
   var recos=window._lastRecos||[];
