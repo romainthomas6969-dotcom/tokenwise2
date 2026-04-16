@@ -855,23 +855,30 @@ function goPage(name){
   var lbl=document.getElementById("topbar-page");
   if(lbl){lbl.textContent=PAGE_LABELS[name]||"";}
   if(name==="landing"){}
-  if(name==="tracker"){renderTS();renderT();}
+  if(name==="tracker"){initTracker();}
   if(name==="tokens"&&!chartsOk){setTimeout(initCharts,100);chartsOk=true;}
   if(name==="prompts"){renderCats();renderIAs();renderPrompts();}
   window.scrollTo(0,0);
 }
 function toggleSidebar(){
   var sb=document.getElementById("sidebar");
-  var ov=document.getElementById("sidebar-overlay");
-  var hb=document.querySelector(".hamburger");
-  sb.classList.toggle("open");
-  ov.classList.toggle("show");
-  hb.classList.toggle("open");
+  if(sb && sb.classList.contains("open")){
+    closeSidebar();
+  } else {
+    var ov=document.getElementById("sidebar-overlay");
+    var hb=document.querySelector(".hamburger");
+    if(sb){sb.classList.add("open");}
+    if(ov){ov.classList.add("show");}
+    if(hb){hb.classList.add("open");}
+  }
 }
 function closeSidebar(){
-  document.getElementById("sidebar").classList.remove("open");
-  document.getElementById("sidebar-overlay").classList.remove("show");
-  document.querySelector(".hamburger").classList.remove("open");
+  var sb=document.getElementById("sidebar");
+  var ov=document.getElementById("sidebar-overlay");
+  var hb=document.querySelector(".hamburger");
+  if(sb){sb.classList.remove("open");}
+  if(ov){ov.classList.remove("show");}
+  if(hb){hb.classList.remove("open");}
 }
 
 function initCharts(){
@@ -1220,6 +1227,11 @@ function filt(btn){
   document.querySelectorAll(".fc").forEach(function(b){b.classList.remove("on");});
   btn.classList.add("on");
   tfilt=btn.dataset.p;
+  renderT();
+}
+function initTracker(){
+  tfilt="all";
+  renderTS();
   renderT();
 }
 
@@ -1593,14 +1605,14 @@ function copyPrm(btn,idx){
 }
 
 window.addEventListener('load', function(){
-  renderTS();
-  renderT();
   renderCats();
   renderIAs();
   renderPrompts();
+  // Init tracker - t-body exists in DOM even when hidden
+  renderTS();
+  renderT();
 });
-// Fallback direct call
-renderTS();renderT();renderCats();renderIAs();renderPrompts();
+
 setInterval(function(){
   var el=document.getElementById("t-time");
   if(el){el.textContent="Mis à jour : "+new Date().toLocaleString("fr-FR",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});}
