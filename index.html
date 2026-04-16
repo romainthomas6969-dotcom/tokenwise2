@@ -375,8 +375,8 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
             <th>Niveau</th>
             <th>Input /M tokens</th>
             <th>Output /M tokens</th>
-            <th>Ratio I/O</th>
-            <th>Comparatif</th>
+            <th>Contexte max</th>
+            <th>Meilleur pour</th>
           </tr>
         </thead>
         <tbody id="t-body"></tbody>
@@ -573,22 +573,22 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
 
 <script>
 var MODELS=[
-  {p:"Anthropic",c:"#D85A30",n:"Claude Haiku 4.5",t:"fast",i:1.00,o:5.00,str:["Repetitif","Extraction","Chatbot"]},
-  {p:"Anthropic",c:"#D85A30",n:"Claude Sonnet 4.6",t:"balanced",i:3.00,o:15.00,str:["Code","Redaction","Analyse"]},
-  {p:"Anthropic",c:"#D85A30",n:"Claude Opus 4.6",t:"powerful",i:5.00,o:25.00,str:["Code complexe","Juridique","Raisonnement"]},
-  {p:"OpenAI",c:"#059669",n:"GPT-5 nano",t:"fast",i:0.05,o:0.40,str:["Ultra-economique","Classification"]},
-  {p:"OpenAI",c:"#059669",n:"GPT-5 mini",t:"fast",i:0.25,o:2.00,str:["Economique","Polyvalent"]},
-  {p:"OpenAI",c:"#059669",n:"GPT-4o",t:"balanced",i:1.25,o:5.00,str:["Vision","Multimodal"]},
-  {p:"OpenAI",c:"#059669",n:"GPT-5.2",t:"powerful",i:1.75,o:14.00,str:["Raisonnement","Recherche"]},
-  {p:"OpenAI",c:"#059669",n:"GPT-5.2 Pro",t:"ultra",i:21.00,o:168.00,str:["Meilleur marche"]},
-  {p:"Google",c:"#D97706",n:"Gemini 3 Flash",t:"fast",i:0.10,o:0.40,str:["Rapide","Economique"]},
-  {p:"Google",c:"#D97706",n:"Gemini 2.5 Flash",t:"fast",i:0.26,o:1.05,str:["Grand contexte","Economique"]},
-  {p:"Google",c:"#D97706",n:"Gemini 2.5 Pro",t:"balanced",i:1.25,o:10.00,str:["1M tokens","Multimodal"]},
-  {p:"Google",c:"#D97706",n:"Gemini 3.1 Pro",t:"powerful",i:2.00,o:12.00,str:["Recherche Google"]},
-  {p:"xAI",c:"#7C3AED",n:"Grok 4.1",t:"fast",i:0.20,o:0.50,str:["Actualite","Economique"]},
-  {p:"xAI",c:"#7C3AED",n:"Grok 4.1 Heavy",t:"powerful",i:3.00,o:15.00,str:["Raisonnement","Actualite"]},
-  {p:"DeepSeek",c:"#6B6860",n:"DeepSeek V3",t:"balanced",i:0.27,o:1.10,str:["Tres economique","Traduction"]},
-  {p:"DeepSeek",c:"#6B6860",n:"DeepSeek R1",t:"powerful",i:0.55,o:2.19,str:["Code","Maths","Tres economique"]}
+  {p:"Anthropic",c:"#D85A30",n:"Claude Haiku 4.5",t:"fast",i:1.00,o:5.00,ctx:200000,best:"Chatbot, extraction, FAQ",str:["Repetitif","Extraction","Chatbot"]},
+  {p:"Anthropic",c:"#D85A30",n:"Claude Sonnet 4.6",t:"balanced",i:3.00,o:15.00,ctx:200000,best:"Code, redaction, analyse",str:["Code","Redaction","Analyse"]},
+  {p:"Anthropic",c:"#D85A30",n:"Claude Opus 4.6",t:"powerful",i:5.00,o:25.00,ctx:200000,best:"Juridique, raisonnement complexe",str:["Code complexe","Juridique","Raisonnement"]},
+  {p:"OpenAI",c:"#059669",n:"GPT-5 nano",t:"fast",i:0.05,o:0.40,ctx:128000,best:"Classification, tri en masse",str:["Ultra-economique","Classification"]},
+  {p:"OpenAI",c:"#059669",n:"GPT-5 mini",t:"fast",i:0.25,o:2.00,ctx:128000,best:"Chatbot economique, emails",str:["Economique","Polyvalent"]},
+  {p:"OpenAI",c:"#059669",n:"GPT-4o",t:"balanced",i:1.25,o:5.00,ctx:128000,best:"Vision, images, multimodal",str:["Vision","Multimodal"]},
+  {p:"OpenAI",c:"#059669",n:"GPT-5.2",t:"powerful",i:1.75,o:14.00,ctx:128000,best:"Raisonnement, recherche",str:["Raisonnement","Recherche"]},
+  {p:"OpenAI",c:"#059669",n:"GPT-5.2 Pro",t:"ultra",i:21.00,o:168.00,ctx:128000,best:"Precision maximale, cas critiques",str:["Meilleur marche"]},
+  {p:"Google",c:"#D97706",n:"Gemini 3 Flash",t:"fast",i:0.10,o:0.40,ctx:1000000,best:"Volume eleve, tres economique",str:["Rapide","Economique"]},
+  {p:"Google",c:"#D97706",n:"Gemini 2.5 Flash",t:"fast",i:0.26,o:1.05,ctx:1000000,best:"Documents longs, economique",str:["Grand contexte","Economique"]},
+  {p:"Google",c:"#D97706",n:"Gemini 2.5 Pro",t:"balanced",i:1.25,o:10.00,ctx:1000000,best:"Tres longs documents, multimodal",str:["1M tokens","Multimodal"]},
+  {p:"Google",c:"#D97706",n:"Gemini 3.1 Pro",t:"powerful",i:2.00,o:12.00,ctx:1000000,best:"Recherche web integree",str:["Recherche Google"]},
+  {p:"xAI",c:"#7C3AED",n:"Grok 4.1",t:"fast",i:0.20,o:0.50,ctx:131000,best:"Actualite X/Twitter",str:["Actualite","Economique"]},
+  {p:"xAI",c:"#7C3AED",n:"Grok 4.1 Heavy",t:"powerful",i:3.00,o:15.00,ctx:131000,best:"Raisonnement, actualite",str:["Raisonnement","Actualite"]},
+  {p:"DeepSeek",c:"#6B6860",n:"DeepSeek V3",t:"balanced",i:0.27,o:1.10,ctx:64000,best:"Traduction, tres economique",str:["Tres economique","Traduction"]},
+  {p:"DeepSeek",c:"#6B6860",n:"DeepSeek R1",t:"powerful",i:0.55,o:2.19,ctx:64000,best:"Code, maths, raisonnement",str:["Code","Maths","Tres economique"]}
 ];
 var SPEC={
   code:{best:["Claude Sonnet 4.6","Claude Opus 4.6","DeepSeek R1"],note:"Claude et DeepSeek R1 excellent en code"},
@@ -984,13 +984,27 @@ function renderT(){
   else if(s==="tr"){d.sort(function(a,b){return TO[a.t]-TO[b.t];});}
   var maxI=Math.max.apply(null,MODELS.map(function(m){return m.i;}));
   var minI=Math.min.apply(null,MODELS.map(function(m){return m.i;}));
+  function fCtx(n){if(n>=1000000)return(n/1000000).toFixed(0)+"M tok";if(n>=1000)return(n/1000).toFixed(0)+"k tok";return n+" tok";}
   document.getElementById("t-body").innerHTML=d.map(function(m){
-    var pct=maxI>minI?((m.i-minI)/(maxI-minI)*100).toFixed(0):50;
-    return "<tr><td><span class=\"dot2\" style=\"background:"+m.c+"\"></span>"+m.n+(m.i===minI?"<span class=\"cstar\">Moins cher</span>":"")+"</td>"+
-      "<td style=\"color:var(--text2)\">"+m.p+"</td><td><span class=\"tier-t "+TC[m.t]+"\">"+TL[m.t]+"</span></td>"+
-      "<td class=\"mono\">"+f(m.i)+"</td><td class=\"mono\">"+f(m.o)+"</td>"+
-      "<td class=\"mono\" style=\"color:var(--text2)\">"+(m.o/m.i).toFixed(1)+"x</td>"+
-      "<td><div class=\"mb\"><div class=\"mbf\" style=\"width:"+Math.max(2,pct)+"%;background:"+m.c+"\"></div></div></td></tr>";
+    var isCheapest=m.i===minI;
+    var isMostExpensive=m.i===maxI;
+    return "<tr>"+
+      "<td><div style=\"display:flex;align-items:center;gap:10px\">"+
+        "<div style=\"width:36px;height:36px;border-radius:8px;background:"+m.c+"18;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid "+m.c+"40\">"+
+          "<span style=\"width:10px;height:10px;border-radius:50%;background:"+m.c+";display:block\"></span>"+
+        "</div>"+
+        "<div style=\"font-weight:700;color:var(--text);font-size:13px\">"+m.n+"</div>"+
+      "</div></td>"+
+      "<td><span style=\"font-size:12px;font-weight:600;color:"+m.c+"\">"+m.p+"</span></td>"+
+      "<td><span class=\"tier-t "+TC[m.t]+"\">"+ TL[m.t]+"</span></td>"+
+      "<td><div style=\"display:flex;align-items:center;gap:5px\"><span class=\"mono\" style=\"font-weight:700\">"+f(m.i)+"</span>"+
+        (isCheapest?"<span class=\"cstar\">Moins cher</span>":"")+
+        (isMostExpensive?"<span style=\"font-size:9px;background:var(--red-bg);color:var(--red);padding:1px 5px;border-radius:3px;font-weight:700\">Plus cher</span>":"")+
+      "</div></td>"+
+      "<td class=\"mono\" style=\"font-weight:700\">"+f(m.o)+"</td>"+
+      "<td><span style=\"font-size:12px;color:var(--text2)\">"+fCtx(m.ctx||128000)+"</span></td>"+
+      "<td><span style=\"font-size:12px;color:var(--text2)\">"+m.best+"</span></td>"+
+    "</tr>";
   }).join("");
 }
 
@@ -1272,7 +1286,7 @@ function renderPrompts(){
   }).join("");
 }
 
-document.addEventListener('DOMContentLoaded', function(){
+window.addEventListener('load', function(){
   renderTS();
   renderT();
   renderCats();
