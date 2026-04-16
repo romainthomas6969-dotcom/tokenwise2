@@ -727,10 +727,90 @@ function doAnalyze(){
   .then(function(data){
     if(data.error){throw new Error(data.error);}
     var r=JSON.parse(data.result);
-    showAIResult(r);
+    if(r.needs_clarification){
+      showClarification(r,input);
+    } else {
+      showAIResult(r);
+    }
   })
   .catch(function(){
     var r=analyzeLocal(input);
+    showLocalResult(r);
+  });
+}
+
+function showClarification(r,originalInput){
+  document.getElementById("thinking").classList.remove("show");
+  document.getElementById("send-btn").disabled=false;
+  document.getElementById("result-block").classList.remove("show");
+  window._clarInput=originalInput;
+  var clarDiv=document.getElementById("clarification");
+  if(!clarDiv){
+    clarDiv=document.createElement("div");
+    clarDiv.id="clarification";
+    clarDiv.style.cssText="background:var(--bg2);border:1.5px solid var(--accent);border-radius:14px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow-md)";
+    document.getElementById("result-block").parentNode.insertBefore(clarDiv,document.getElementById("result-block"));
+  }
+  clarDiv.style.display="block";
+  clarDiv.innerHTML="";
+  var lbl=document.createElement("div");
+  lbl.style.cssText="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px";
+  lbl.textContent="Une question pour mieux estimer";
+  clarDiv.appendChild(lbl);
+  var q=document.createElement("div");
+  q.style.cssText="font-size:13px;color:var(--text);margin-bottom:14px;line-height:1.6";
+  q.textContent=r.question;
+  clarDiv.appendChild(q);
+  var chips=document.createElement("div");
+  chips.style.cssText="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px";
+  var sugs=["Quelques fois par semaine","Plusieurs fois par jour","Des centaines par jour","Des milliers par jour"];
+  sugs.forEach(function(s){
+    var btn=document.createElement("button");
+    btn.textContent=s;
+    btn.style.cssText="padding:5px 11px;border-radius:16px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:11px;cursor:pointer;font-family:inherit";
+    btn.onclick=function(){document.getElementById("clar-inp").value=s;};
+    chips.appendChild(btn);
+  });
+  clarDiv.appendChild(chips);
+  var row=document.createElement("div");
+  row.style.cssText="display:flex;gap:8px";
+  var inp=document.createElement("input");
+  inp.id="clar-inp";
+  inp.type="text";
+  inp.placeholder="Ta reponse...";
+  inp.style.cssText="flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:inherit;font-size:13px;background:var(--bg2);color:var(--text);outline:none";
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter"){sendClar();}});
+  var sbtn=document.createElement("button");
+  sbtn.textContent="Envoyer";
+  sbtn.style.cssText="padding:9px 16px;border:none;border-radius:9px;background:var(--accent);color:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer";
+  sbtn.onclick=sendClar;
+  row.appendChild(inp);
+  row.appendChild(sbtn);
+  clarDiv.appendChild(row);
+  clarDiv.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+
+function sendClar(){
+  var originalInput=window._clarInput||"";
+  var clarAnswer=document.getElementById("clar-inp").value.trim();
+  if(!clarAnswer){return;}
+  var combined=originalInput+" - "+clarAnswer;
+  document.getElementById("ui").value=combined;
+  var clarDiv=document.getElementById("clarification");
+  if(clarDiv){clarDiv.style.display="none";}
+  document.getElementById("thinking").classList.add("show");
+  document.getElementById("send-btn").disabled=true;
+  fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({userMessage:combined})})
+  .then(function(res){return res.json();})
+  .then(function(data){
+    if(data.error){throw new Error(data.error);}
+    var r=JSON.parse(data.result);
+    if(r.needs_clarification){showClarification(r,combined);}
+    else{showAIResult(r);}
+  })
+  .catch(function(){
+    var r=analyzeLocal(combined);
     showLocalResult(r);
   });
 }
