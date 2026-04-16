@@ -375,7 +375,7 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
             <th>Niveau</th>
             <th>Input /M tokens</th>
             <th>Output /M tokens</th>
-            <th>Contexte max</th>
+            <th>Pages lisibles max</th>
             <th>Meilleur pour</th>
           </tr>
         </thead>
@@ -984,7 +984,7 @@ function renderT(){
   else if(s==="tr"){d.sort(function(a,b){return TO[a.t]-TO[b.t];});}
   var maxI=Math.max.apply(null,MODELS.map(function(m){return m.i;}));
   var minI=Math.min.apply(null,MODELS.map(function(m){return m.i;}));
-  function fCtx(n){if(n>=1000000)return(n/1000000).toFixed(0)+"M tok";if(n>=1000)return(n/1000).toFixed(0)+"k tok";return n+" tok";}
+  function fCtx(n){var pages=Math.round(n/700);if(pages>=1000)return"~"+(pages/1000).toFixed(0)+"k pages";return"~"+pages+" pages";}
   document.getElementById("t-body").innerHTML=d.map(function(m){
     var isCheapest=m.i===minI;
     var isMostExpensive=m.i===maxI;
