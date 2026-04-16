@@ -1272,11 +1272,13 @@ function renderPrompts(){
   }).join("");
 }
 
-renderTS();
-renderT();
-renderCats();
-renderIAs();
-renderPrompts();
+document.addEventListener('DOMContentLoaded', function(){
+  renderTS();
+  renderT();
+  renderCats();
+  renderIAs();
+  renderPrompts();
+});
 setInterval(function(){
   var el=document.getElementById("t-time");
   if(el){el.textContent="Mis a jour: "+new Date().toLocaleString("fr-FR",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});}
