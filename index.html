@@ -561,105 +561,105 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
       <p>Comparez les 16 modèles des 5 grands fournisseurs. Prix en USD par million de tokens.</p>
     </div>
 
-    <!-- STATS CARDS -->
+    <!-- STATS -->
     <div class="stats-row" id="t-stats"></div>
 
-    <!-- FILTRES -->
-    <div class="ctrl">
-      <button class="fc on" data-p="all" onclick="filt(this)">Tous</button>
-      <button class="fc" data-p="Anthropic" onclick="filt(this)" style="color:#D85A30;border-color:#D85A30;background:#fff8f6">Anthropic</button>
-      <button class="fc" data-p="OpenAI" onclick="filt(this)" style="color:#059669;border-color:#059669;background:#f0fdf4">OpenAI</button>
-      <button class="fc" data-p="Google" onclick="filt(this)" style="color:#D97706;border-color:#D97706;background:#fffbeb">Google</button>
-      <button class="fc" data-p="xAI" onclick="filt(this)" style="color:#7C3AED;border-color:#7C3AED;background:#faf5ff">xAI</button>
-      <button class="fc" data-p="DeepSeek" onclick="filt(this)" style="color:#58667E;border-color:#58667E;background:#f8fafd">DeepSeek</button>
-      <select class="sdd" id="t-sort" onchange="renderT()">
-        <option value="ia">Trier : Input croissant</option>
-        <option value="id">Trier : Input décroissant</option>
-        <option value="oa">Trier : Output croissant</option>
-        <option value="tr">Trier : Niveau</option>
-        <option value="pv">Trier : Fournisseur</option>
-      </select>
-    </div>
-
-    <!-- TABLEAU -->
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Modele</th>
-            <th>Fournisseur</th>
-            <th>Niveau</th>
-            <th>Input /M tokens</th>
-            <th>Output /M tokens</th>
-            <th>Pages lisibles max</th>
-            <th>Meilleur pour</th>
-          </tr>
-        </thead>
-        <tbody id="t-body"></tbody>
-      </table>
-    </div>
-
     <!-- NIVEAUX -->
-    <div class="sub-section">
-      <h3>Les 4 niveaux de modèles</h3>
-      <div class="tier-row">
-        <div class="tier-card" style="border-top:3px solid #38BDF8">
-          <div class="tag tt" style="margin-bottom:6px">Rapide</div>
-          <p>Tâches simples et répétitives : chatbot, extraction, FAQ, classification. Très économique.</p>
-          <small>Claude Haiku, GPT-5 nano, Gemini Flash</small>
-        </div>
-        <div class="tier-card" style="border-top:3px solid #3861FB">
-          <div class="tag tb" style="margin-bottom:6px">Equilibre</div>
-          <p>Meilleur rapport qualité/prix. Rédaction, résumé, analyse standard, emails clients.</p>
-          <small>Claude Sonnet, GPT-4o, Gemini Pro</small>
-        </div>
-        <div class="tier-card" style="border-top:3px solid #F59E0B">
-          <div class="tag ta" style="margin-bottom:6px">Puissant</div>
-          <p>Raisonnement complexe, analyse juridique ou financière, génération de code avancée.</p>
-          <small>Claude Opus, GPT-5.2, DeepSeek R1</small>
-        </div>
-        <div class="tier-card" style="border-top:3px solid #EA3943">
-          <div class="tag tr" style="margin-bottom:6px">Ultra</div>
-          <p>Sommet du marché. Précision maximale. Prix très élevé, à réserver aux cas exceptionnels.</p>
-          <small>GPT-5.2 Pro</small>
-        </div>
+    <div style="margin-bottom:8px"><h3 style="font-size:16px;font-weight:700;color:var(--text)">Les 4 niveaux de modèles</h3></div>
+    <div class="tier-row">
+      <div class="tier-card" style="border-top:3px solid #38BDF8">
+        <div class="tag tt" style="margin-bottom:6px">Rapide</div>
+        <p>Tâches simples et répétitives : chatbot, extraction, FAQ, classification. Très économique.</p>
+        <small>Claude Haiku, GPT-5 nano, Gemini Flash</small>
+      </div>
+      <div class="tier-card" style="border-top:3px solid #3861FB">
+        <div class="tag tb" style="margin-bottom:6px">Équilibre</div>
+        <p>Meilleur rapport qualité/prix. Rédaction, résumé, analyse standard, emails clients.</p>
+        <small>Claude Sonnet, GPT-4o, Gemini Pro</small>
+      </div>
+      <div class="tier-card" style="border-top:3px solid #F59E0B">
+        <div class="tag ta" style="margin-bottom:6px">Puissant</div>
+        <p>Raisonnement complexe, analyse juridique ou financière, génération de code avancée.</p>
+        <small>Claude Opus, GPT-5.2, DeepSeek R1</small>
+      </div>
+      <div class="tier-card" style="border-top:3px solid #EA3943">
+        <div class="tag tr" style="margin-bottom:6px">Ultra</div>
+        <p>Sommet du marché. Précision maximale. Prix très élevé, à réserver aux cas exceptionnels.</p>
+        <small>GPT-5.2 Pro</small>
       </div>
     </div>
 
     <!-- ABONNEMENTS -->
     <div class="sub-section">
-      <h3>Abonnements mensuels</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Accès interface chat — distinct des prix API ci-dessus</p>
+      <h3 style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:5px">Abonnements mensuels</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Accès interface chat — distinct des prix API ci-dessous</p>
       <div class="sub-grid">
         <div class="sub-card">
           <div class="sub-logo" style="color:#D85A30">Anthropic - Claude</div>
-          <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">Usage limite</div></div>
-          <div class="sub-plan"><div class="sub-pname">Pro</div><div class="sub-pprice">18 EUR/mois</div><div class="sub-pdesc">Usage eleve + Opus</div></div>
+          <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">Usage limité</div></div>
+          <div class="sub-plan"><div class="sub-pname">Pro</div><div class="sub-pprice">18 EUR/mois</div><div class="sub-pdesc">Usage élevé + Opus</div></div>
           <div class="sub-plan"><div class="sub-pname">Team</div><div class="sub-pprice">25 EUR/user/mois</div><div class="sub-pdesc">Collaboration</div></div>
         </div>
         <div class="sub-card">
           <div class="sub-logo" style="color:#059669">OpenAI - ChatGPT</div>
           <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">GPT-4o mini</div></div>
           <div class="sub-plan"><div class="sub-pname">Plus</div><div class="sub-pprice">20 EUR/mois</div><div class="sub-pdesc">GPT-4o + DALL-E</div></div>
-          <div class="sub-plan"><div class="sub-pname">Pro</div><div class="sub-pprice">200 EUR/mois</div><div class="sub-pdesc">Acces illimite</div></div>
+          <div class="sub-plan"><div class="sub-pname">Pro</div><div class="sub-pprice">200 EUR/mois</div><div class="sub-pdesc">Accès illimité</div></div>
         </div>
         <div class="sub-card">
           <div class="sub-logo" style="color:#D97706">Google - Gemini</div>
           <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">Gemini standard</div></div>
           <div class="sub-plan"><div class="sub-pname">Advanced</div><div class="sub-pprice">22 EUR/mois</div><div class="sub-pdesc">Ultra + 1To Drive</div></div>
-          <div class="sub-plan"><div class="sub-pname">Business</div><div class="sub-pprice">14 EUR/user/mois</div><div class="sub-pdesc">Workspace integre</div></div>
+          <div class="sub-plan"><div class="sub-pname">Business</div><div class="sub-pprice">14 EUR/user/mois</div><div class="sub-pdesc">Workspace intégré</div></div>
         </div>
         <div class="sub-card">
           <div class="sub-logo" style="color:#7C3AED">xAI - Grok</div>
           <div class="sub-plan"><div class="sub-pname">X Premium</div><div class="sub-pprice">8 EUR/mois</div><div class="sub-pdesc">Grok basique</div></div>
-          <div class="sub-plan"><div class="sub-pname">SuperGrok</div><div class="sub-pprice">30 EUR/mois</div><div class="sub-pdesc">Grok avance</div></div>
-          <div class="sub-plan"><div class="sub-pname">SuperGrok Heavy</div><div class="sub-pprice">280 EUR/mois</div><div class="sub-pdesc">Modeles lourds</div></div>
+          <div class="sub-plan"><div class="sub-pname">SuperGrok</div><div class="sub-pprice">30 EUR/mois</div><div class="sub-pdesc">Grok avancé</div></div>
+          <div class="sub-plan"><div class="sub-pname">SuperGrok Heavy</div><div class="sub-pprice">280 EUR/mois</div><div class="sub-pdesc">Modèles lourds</div></div>
         </div>
         <div class="sub-card">
           <div class="sub-logo" style="color:#58667E">DeepSeek</div>
-          <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">Interface complete</div></div>
+          <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">Interface complète</div></div>
           <div class="sub-plan"><div class="sub-pname">API only</div><div class="sub-pprice">Pay-as-you-go</div><div class="sub-pdesc">Pas d'abonnement</div></div>
         </div>
+      </div>
+    </div>
+
+    <!-- TABLEAU COMPARATIF -->
+    <div class="sub-section">
+      <h3 style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:5px">Comparatif détaillé des prix API</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Prix facturés à l'usage pour les développeurs et les applications</p>
+      <div class="ctrl">
+        <button class="fc on" data-p="all" onclick="filt(this)">Tous</button>
+        <button class="fc" data-p="Anthropic" onclick="filt(this)" style="color:#D85A30;border-color:#D85A30">Anthropic</button>
+        <button class="fc" data-p="OpenAI" onclick="filt(this)" style="color:#059669;border-color:#059669">OpenAI</button>
+        <button class="fc" data-p="Google" onclick="filt(this)" style="color:#D97706;border-color:#D97706">Google</button>
+        <button class="fc" data-p="xAI" onclick="filt(this)" style="color:#7C3AED;border-color:#7C3AED">xAI</button>
+        <button class="fc" data-p="DeepSeek" onclick="filt(this)" style="color:#58667E;border-color:#58667E">DeepSeek</button>
+        <select class="sdd" id="t-sort" onchange="renderT()">
+          <option value="ia">Trier : Input croissant</option>
+          <option value="id">Trier : Input décroissant</option>
+          <option value="oa">Trier : Output croissant</option>
+          <option value="tr">Trier : Niveau</option>
+          <option value="pv">Trier : Fournisseur</option>
+        </select>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Modèle</th>
+              <th>Fournisseur</th>
+              <th>Niveau</th>
+              <th>Input /M tokens</th>
+              <th>Output /M tokens</th>
+              <th>Pages lisibles max</th>
+              <th>Meilleur pour</th>
+            </tr>
+          </thead>
+          <tbody id="t-body"></tbody>
+        </table>
       </div>
     </div>
 
@@ -1599,6 +1599,8 @@ window.addEventListener('load', function(){
   renderIAs();
   renderPrompts();
 });
+// Fallback direct call
+renderTS();renderT();renderCats();renderIAs();renderPrompts();
 setInterval(function(){
   var el=document.getElementById("t-time");
   if(el){el.textContent="Mis à jour : "+new Date().toLocaleString("fr-FR",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});}
