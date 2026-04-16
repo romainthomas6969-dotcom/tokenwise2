@@ -251,33 +251,50 @@ textarea#ui::placeholder{color:var(--text3)}
 .ref-table td:nth-child(2),.ref-table td:nth-child(3){font-family:monospace;font-weight:600;color:var(--text)}
 
 /* PROMPTS */
-.prm-wrap{max-width:760px;margin:0 auto;padding:24px 20px 60px}
+.prm-wrap{max-width:800px;margin:0 auto;padding:24px 16px 60px}
 .prm-hero{margin-bottom:20px}
-.prm-hero h2{font-size:20px;font-weight:700;margin-bottom:5px}
+.prm-hero h2{font-size:22px;font-weight:800;margin-bottom:5px;letter-spacing:-0.3px}
 .prm-hero p{font-size:13px;color:var(--text2);line-height:1.6}
-.prm-search{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:var(--bg2);color:var(--text)}
-.prm-search:focus{outline:none;border-color:var(--accent)}
+
+/* Barre de recherche */
+.prm-searchbar{position:relative;margin-bottom:14px;display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;transition:border-color 0.2s;box-shadow:var(--shadow)}
+.prm-searchbar:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,97,251,0.08)}
+.prm-search-icon{position:absolute;left:12px;color:var(--text3);font-size:15px;pointer-events:none}
+.prm-search{flex:1;padding:11px 40px 11px 38px;border:none;background:none;font-family:inherit;font-size:13px;color:var(--text);outline:none}
 .prm-search::placeholder{color:var(--text3)}
-.prm-cats{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
-.pcat{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:inherit;font-weight:500;transition:all 0.15s}
+.prm-search-clear{position:absolute;right:10px;background:var(--bg3);border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;color:var(--text3);font-size:11px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.prm-search-clear:hover{background:var(--border2);color:var(--text)}
+
+/* Filtres domaines - scroll horizontal */
+.prm-filter-section{margin-bottom:8px}
+.prm-ia-section{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.prm-ia-label{font-size:11px;font-weight:700;color:var(--text3);white-space:nowrap;flex-shrink:0}
+.prm-filter-scroll{display:flex;gap:5px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.prm-filter-scroll::-webkit-scrollbar{display:none}
+.pcat{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:inherit;font-weight:500;transition:all 0.15s;white-space:nowrap;flex-shrink:0}
 .pcat:hover{border-color:var(--accent);color:var(--accent)}
 .pcat.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:700}
-.prm-count{font-size:12px;color:var(--text3);margin-bottom:10px}
-.prm-grid{display:grid;gap:8px}
-.prm-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color 0.2s}
-.prm-card:hover{border-color:var(--border2)}
+
+/* Compteur */
+.prm-count{font-size:12px;color:var(--text3);margin-bottom:12px;font-weight:500}
+
+/* Grille de prompts - 2 colonnes sur desktop */
+.prm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px}
+@media(max-width:600px){.prm-grid{grid-template-columns:1fr}}
+.prm-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all 0.2s;box-shadow:var(--shadow)}
+.prm-card:hover{border-color:var(--accent);box-shadow:var(--shadow-md);transform:translateY(-1px)}
 .prm-card-top{padding:14px 16px 10px}
 .prm-card-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px}
 .prm-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.4}
-.prm-badges{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
-.prm-body{font-size:11px;color:var(--text2);line-height:1.7;background:var(--bg3);padding:10px 16px;font-family:"SF Mono","Fira Code",monospace;white-space:pre-wrap;word-break:break-word;max-height:120px;overflow:hidden;transition:max-height 0.4s;border-top:1px solid var(--border)}
+.prm-badges{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;align-items:center}
+.prm-body{font-size:11px;color:var(--text2);line-height:1.8;background:var(--bg3);padding:12px 16px;font-family:"SF Mono","Fira Code",monospace;white-space:pre-wrap;word-break:break-word;max-height:100px;overflow:hidden;transition:max-height 0.4s;border-top:1px solid var(--border)}
 .prm-body.expanded{max-height:2000px}
-.prm-footer{display:flex;justify-content:flex-end;align-items:center;padding:8px 16px;border-top:1px solid var(--border);gap:6px}
+.prm-footer{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;border-top:1px solid var(--border);background:var(--bg3)}
 .prm-actions{display:flex;gap:5px}
-.copy-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--accent);background:var(--accent-bg);color:var(--accent);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s}
-.copy-btn:hover{background:var(--accent);color:#fff}
-.copy-btn.copied{background:var(--green-bg);border-color:var(--green);color:var(--green)}
-.expand-btn{padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:11px;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.copy-btn{padding:6px 14px;border-radius:7px;border:none;background:var(--accent);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.copy-btn:hover{background:#2d52d4}
+.copy-btn.copied{background:var(--green);color:#fff}
+.expand-btn{padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;font-family:inherit;transition:all 0.15s}
 .expand-btn:hover{border-color:var(--border2);color:var(--text)}
 footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);color:var(--text3);font-size:11px}
 
@@ -684,25 +701,35 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
 <!-- PROMPTS -->
 <div class="page" id="page-prompts">
   <div class="prm-wrap">
+
+    <!-- HERO -->
     <div class="prm-hero">
-      <div class="slabel">Bibliotheque</div>
-      <h2>Prompts prêts à l'emploi</h2>
-      <p>64 prompts optimisés sur 22 domaines. Filtre par IA ou par domaine, copie et adapte les parties entre [ ].</p>
+      <h2>Bibliothèque de prompts</h2>
+      <p>72 prompts optimisés sur 23 domaines. Copie et adapte les parties entre [ ].</p>
     </div>
-    <div style="position:relative;margin-bottom:12px">
-      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;pointer-events:none">&#128269;</span>
-      <input class="prm-search" id="prm-search" placeholder="Rechercher par titre, domaine ou mot-clé..." oninput="searchP(this.value)" style="padding-left:36px;margin-bottom:0">
+
+    <!-- BARRE DE RECHERCHE -->
+    <div class="prm-searchbar">
+      <span class="prm-search-icon">&#128269;</span>
+      <input class="prm-search" id="prm-search" placeholder="Rechercher un prompt..." oninput="searchP(this.value)">
+      <button class="prm-search-clear" id="prm-clear" onclick="clearSearch()" style="display:none">&#10005;</button>
     </div>
-    <div style="margin-bottom:6px">
-      <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Filtrer par IA</div>
-      <div class="prm-cats" id="prm-ias"></div>
+
+    <!-- FILTRES DOMAINES - scroll horizontal sur mobile -->
+    <div class="prm-filter-section">
+      <div class="prm-filter-scroll" id="prm-cats"></div>
     </div>
-    <div style="margin-bottom:14px">
-      <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Filtrer par domaine</div>
-      <div class="prm-cats" id="prm-cats"></div>
+
+    <!-- FILTRES IA - pills compactes -->
+    <div class="prm-ia-section">
+      <span class="prm-ia-label">IA :</span>
+      <div class="prm-filter-scroll" id="prm-ias"></div>
     </div>
+
+    <!-- COMPTEUR ET RÉSULTATS -->
     <div class="prm-count" id="prm-count"></div>
     <div class="prm-grid" id="prm-grid"></div>
+
   </div>
 </div>
 
@@ -1386,6 +1413,15 @@ function filterP(btn){
 
 function searchP(q){
   searchQ=q.toLowerCase();
+  var clearBtn=document.getElementById("prm-clear");
+  if(clearBtn){clearBtn.style.display=q?"flex":"none";}
+  renderPrompts();
+}
+function clearSearch(){
+  document.getElementById("prm-search").value="";
+  searchQ="";
+  var clearBtn=document.getElementById("prm-clear");
+  if(clearBtn){clearBtn.style.display="none";}
   renderPrompts();
 }
 
