@@ -280,6 +280,42 @@ textarea#ui::placeholder{color:var(--text3)}
 .expand-btn{padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:11px;cursor:pointer;font-family:inherit;transition:all 0.15s}
 .expand-btn:hover{border-color:var(--border2);color:var(--text)}
 footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);color:var(--text3);font-size:11px}
+
+/* LANDING PAGE */
+.landing-hero{max-width:760px;margin:0 auto;padding:60px 24px 48px;text-align:center}
+.landing-badge{display:inline-block;background:var(--accent-bg);color:var(--accent);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;border:1px solid rgba(56,97,251,0.2);margin-bottom:20px;letter-spacing:0.3px}
+.landing-hero h1{font-size:clamp(32px,5vw,52px);font-weight:800;line-height:1.1;color:var(--text);margin-bottom:16px;letter-spacing:-1px}
+.landing-hero h1 span{color:var(--accent)}
+.landing-hero p{font-size:16px;color:var(--text2);line-height:1.7;max-width:520px;margin:0 auto 28px}
+.landing-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cta-primary{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px 26px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.cta-primary:hover{background:#2d52d4;transform:translateY(-1px);box-shadow:0 4px 14px rgba(56,97,251,0.3)}
+.cta-secondary{background:var(--bg2);color:var(--text);border:1.5px solid var(--border);border-radius:10px;padding:13px 26px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.cta-secondary:hover{border-color:var(--border2);background:var(--bg3)}
+.landing-steps{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:48px 24px}
+.ls-title{text-align:center;font-size:22px;font-weight:800;color:var(--text);margin-bottom:32px;letter-spacing:-0.3px}
+.ls-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:900px;margin:0 auto}
+.ls-card{text-align:center;padding:24px 20px;position:relative}
+.ls-num{position:absolute;top:0;left:50%;transform:translateX(-50%);width:28px;height:28px;background:var(--accent);color:#fff;border-radius:50%;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ls-icon{font-size:36px;margin:16px 0 12px}
+.ls-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px}
+.ls-desc{font-size:13px;color:var(--text2);line-height:1.6}
+.landing-features{padding:48px 24px;max-width:1000px;margin:0 auto}
+.lf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.lf-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;transition:box-shadow 0.2s}
+.lf-card:hover{box-shadow:var(--shadow-md)}
+.lf-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px}
+.lf-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px}
+.lf-desc{font-size:12px;color:var(--text2);line-height:1.6}
+.landing-who{padding:48px 24px;background:var(--bg2);border-top:1px solid var(--border)}
+.lw-title{text-align:center;font-size:22px;font-weight:800;color:var(--text);margin-bottom:28px;letter-spacing:-0.3px}
+.lw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:900px;margin:0 auto}
+.lw-card{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:22px;cursor:pointer;transition:all 0.2s;text-align:center}
+.lw-card:hover{border-color:var(--accent);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.lw-emoji{font-size:32px;margin-bottom:12px}
+.lw-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px}
+.lw-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px}
+.lw-cta{font-size:12px;font-weight:700;color:var(--accent)}
 </style>
 </head>
 <body>
@@ -287,8 +323,9 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
 <nav>
   <div class="logo">Token<span>Wise</span></div>
   <div class="nav-links">
+    <button class="nav-btn active" id="btn-landing" onclick="goPage('landing')">Accueil</button>
     <button class="nav-btn" id="btn-advisor" onclick="goPage('advisor')">Conseiller</button>
-    <button class="nav-btn active" id="btn-tracker" onclick="goPage('tracker')"><span class="dot"></span>Prix</button>
+    <button class="nav-btn" id="btn-tracker" onclick="goPage('tracker')"><span class="dot"></span>Prix</button>
     <button class="nav-btn" id="btn-tokens" onclick="goPage('tokens')">Les tokens</button>
     <button class="nav-btn" id="btn-prompts" onclick="goPage('prompts')">Prompts</button>
   </div>
@@ -299,19 +336,23 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
   <div class="adv-hero">
     <div class="slabel">Routing intelligent</div>
     <h1>Trouve la <em>meilleure IA</em><br>pour ton besoin</h1>
-    <p>Decris ce que tu veux faire. On recommande le modele le plus adapte et le moins cher.</p>
+    <p>Décris ce que tu veux faire. On recommande le modèle le plus adapté et le moins cher.</p>
   </div>
   <div class="chat-area">
     <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px">Essaie un exemple</div>
     <div class="ex-chips">
-      <div class="ex-chip" onclick="setEx('Resumer des contrats PDF, 50 pages, 100 par mois')">Resumer des contrats PDF, 50 pages, 100 par mois</div>
+      <div class="ex-chip" onclick="setEx('Résumer des contrats PDF, 50 pages, 100 par mois')">Résumer des contrats PDF, 50 pages, 100 par mois</div>
       <div class="ex-chip" onclick="setEx('Chatbot pour mes clients, 500 messages par jour')">Chatbot pour mes clients, 500 messages par jour</div>
-      <div class="ex-chip" onclick="setEx('Extraire donnees de 2000 factures par mois')">Extraire donnees de 2000 factures par mois</div>
-      <div class="ex-chip" onclick="setEx('Creer une application web en Python')">Creer une application web en Python</div>
+      <div class="ex-chip" onclick="setEx('Extraire données de 2000 factures par mois')">Extraire données de 2000 factures par mois</div>
+      <div class="ex-chip" onclick="setEx('Créer une application web en Python')">Créer une application web en Python</div>
+      <div class="ex-chip" onclick="setEx('Rédiger une dissertation de 10 pages sur la mondialisation')">Dissertation de 10 pages sur la mondialisation</div>
+      <div class="ex-chip" onclick="setEx('Créer une présentation PowerPoint de 15 slides sur le changement climatique')">Présentation PowerPoint 15 slides</div>
+      <div class="ex-chip" onclick="setEx('Résumer mes cours de 50 pages pour réviser un examen')">Résumer mes cours pour réviser</div>
+      <div class="ex-chip" onclick="setEx('Corriger et améliorer mon rapport de stage')">Corriger mon rapport de stage</div>
     </div>
     <div class="ibox">
       <div class="irow">
-        <textarea id="ui" placeholder="Decris ce que tu veux faire..." rows="3" onkeydown="hk(event)"></textarea>
+        <textarea id="ui" placeholder="Décris ce que tu veux faire..." rows="3" onkeydown="hk(event)"></textarea>
         <div class="iacts">
           <button class="mic-btn" id="mic-btn" onclick="toggleMic()">
             <svg class="mic-svg" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
@@ -335,14 +376,110 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
   </div>
 </div>
 
+<!-- LANDING -->
+<div class="page show" id="page-landing">
+  <div class="landing-hero">
+    <div class="landing-badge">Nouveau — Conseiller IA gratuit</div>
+    <h1>Trouve la meilleure IA<br><span>pour ton besoin</span></h1>
+    <p>TokenWise compare les 16 grands modèles d'IA et t'aide à choisir le plus adapté à ton projet — avec le coût exact, sans jargon.</p>
+    <div class="landing-ctas">
+      <button class="cta-primary" onclick="goPage('advisor')">Trouver mon IA &#8594;</button>
+      <button class="cta-secondary" onclick="goPage('tracker')">Voir les prix</button>
+    </div>
+  </div>
+
+  <div class="landing-steps">
+    <div class="ls-title">Comment ça marche</div>
+    <div class="ls-grid">
+      <div class="ls-card">
+        <div class="ls-num">1</div>
+        <div class="ls-icon">&#128172;</div>
+        <div class="ls-name">Décris ton besoin</div>
+        <div class="ls-desc">Explique en une phrase ce que tu veux faire avec l'IA — rédiger, coder, analyser, traduire...</div>
+      </div>
+      <div class="ls-card">
+        <div class="ls-num">2</div>
+        <div class="ls-icon">&#129504;</div>
+        <div class="ls-name">L'IA analyse</div>
+        <div class="ls-desc">Notre conseiller comprend ton usage, estime le volume et la qualité dont tu as besoin.</div>
+      </div>
+      <div class="ls-card">
+        <div class="ls-num">3</div>
+        <div class="ls-icon">&#127775;</div>
+        <div class="ls-name">Reçois ta recommandation</div>
+        <div class="ls-desc">Tu obtiens le top 3 des modèles adaptés, avec le coût mensuel exact et les raisons du choix.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="landing-features">
+    <div class="lf-grid">
+      <div class="lf-card">
+        <div class="lf-icon" style="background:#EFF6FF;color:#3861FB">&#128202;</div>
+        <div class="lf-name">Prix en temps réel</div>
+        <div class="lf-desc">16 modèles, 5 fournisseurs. Mis à jour régulièrement pour refléter les vrais tarifs API.</div>
+      </div>
+      <div class="lf-card">
+        <div class="lf-icon" style="background:#F0FDF4;color:#16C784">&#9881;</div>
+        <div class="lf-name">Conseiller intelligent</div>
+        <div class="lf-desc">Décris ton projet en langage naturel. L'IA déduit seule le volume, la qualité requise et te recommande le meilleur choix.</div>
+      </div>
+      <div class="lf-card">
+        <div class="lf-icon" style="background:#FFF7ED;color:#F59E0B">&#128221;</div>
+        <div class="lf-name">64 prompts prêts à l'emploi</div>
+        <div class="lf-desc">Pour le business, le code, la rédaction, les études, le voyage et bien plus. Copie et adapte en 2 secondes.</div>
+      </div>
+      <div class="lf-card">
+        <div class="lf-icon" style="background:#F5F3FF;color:#7C3AED">&#128176;</div>
+        <div class="lf-name">Calcul de coût précis</div>
+        <div class="lf-desc">Vois exactement ce que tu vas payer par mois selon ton usage réel — pas d'estimation vague.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="landing-who">
+    <div class="lw-title">Pour qui ?</div>
+    <div class="lw-grid">
+      <div class="lw-card" onclick="goPage('advisor')">
+        <div class="lw-emoji">&#127891;</div>
+        <div class="lw-name">Étudiants</div>
+        <div class="lw-desc">Rédiger des dissertations, créer des présentations, résumer des cours, préparer des examens.</div>
+        <div class="lw-cta">Essayer &#8594;</div>
+      </div>
+      <div class="lw-card" onclick="goPage('advisor')">
+        <div class="lw-emoji">&#128187;</div>
+        <div class="lw-name">Développeurs</div>
+        <div class="lw-desc">Générer du code, déboguer, documenter, créer des APIs. Trouver le bon modèle au meilleur prix.</div>
+        <div class="lw-cta">Essayer &#8594;</div>
+      </div>
+      <div class="lw-card" onclick="goPage('advisor')">
+        <div class="lw-emoji">&#128188;</div>
+        <div class="lw-name">Entrepreneurs</div>
+        <div class="lw-desc">Automatiser le service client, analyser des documents, créer du contenu marketing à grande échelle.</div>
+        <div class="lw-cta">Essayer &#8594;</div>
+      </div>
+      <div class="lw-card" onclick="goPage('advisor')">
+        <div class="lw-emoji">&#128640;</div>
+        <div class="lw-name">Startups & équipes</div>
+        <div class="lw-desc">Intégrer l'IA dans vos produits sans vous ruiner. Comparez avant d'engager votre budget.</div>
+        <div class="lw-cta">Essayer &#8594;</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:40px 20px 60px">
+    <button class="cta-primary" style="font-size:15px;padding:14px 32px" onclick="goPage('advisor')">Commencer gratuitement &#8594;</button>
+  </div>
+</div>
+
 <!-- TRACKER -->
-<div class="page show" id="page-tracker">
+<div class="page" id="page-tracker">
   <div class="trk-wrap">
 
     <!-- HERO -->
     <div class="trk-hero">
       <h1><span class="dot"></span>Prix des tokens IA</h1>
-      <p>Comparez les 16 modeles des 5 grands fournisseurs. Prix en USD par million de tokens.</p>
+      <p>Comparez les 16 modèles des 5 grands fournisseurs. Prix en USD par million de tokens.</p>
     </div>
 
     <!-- STATS CARDS -->
@@ -357,11 +494,11 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
       <button class="fc" data-p="xAI" onclick="filt(this)" style="color:#7C3AED;border-color:#7C3AED;background:#faf5ff">xAI</button>
       <button class="fc" data-p="DeepSeek" onclick="filt(this)" style="color:#58667E;border-color:#58667E;background:#f8fafd">DeepSeek</button>
       <select class="sdd" id="t-sort" onchange="renderT()">
-        <option value="ia">Trier: Input croissant</option>
-        <option value="id">Trier: Input decroissant</option>
-        <option value="oa">Trier: Output croissant</option>
-        <option value="tr">Trier: Niveau</option>
-        <option value="pv">Trier: Fournisseur</option>
+        <option value="ia">Trier : Input croissant</option>
+        <option value="id">Trier : Input décroissant</option>
+        <option value="oa">Trier : Output croissant</option>
+        <option value="tr">Trier : Niveau</option>
+        <option value="pv">Trier : Fournisseur</option>
       </select>
     </div>
 
@@ -385,26 +522,26 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
 
     <!-- NIVEAUX -->
     <div class="sub-section">
-      <h3>Les 4 niveaux de modeles</h3>
+      <h3>Les 4 niveaux de modèles</h3>
       <div class="tier-row">
         <div class="tier-card" style="border-top:3px solid #38BDF8">
           <div class="tag tt" style="margin-bottom:6px">Rapide</div>
-          <p>Taches simples et repetitives : chatbot, extraction, FAQ, classification. Tres economique.</p>
+          <p>Tâches simples et répétitives : chatbot, extraction, FAQ, classification. Très économique.</p>
           <small>Claude Haiku, GPT-5 nano, Gemini Flash</small>
         </div>
         <div class="tier-card" style="border-top:3px solid #3861FB">
           <div class="tag tb" style="margin-bottom:6px">Equilibre</div>
-          <p>Meilleur rapport qualite/prix. Redaction, resume, analyse standard, emails clients.</p>
+          <p>Meilleur rapport qualité/prix. Rédaction, résumé, analyse standard, emails clients.</p>
           <small>Claude Sonnet, GPT-4o, Gemini Pro</small>
         </div>
         <div class="tier-card" style="border-top:3px solid #F59E0B">
           <div class="tag ta" style="margin-bottom:6px">Puissant</div>
-          <p>Raisonnement complexe, analyse juridique ou financiere, generation de code avance.</p>
+          <p>Raisonnement complexe, analyse juridique ou financière, génération de code avancée.</p>
           <small>Claude Opus, GPT-5.2, DeepSeek R1</small>
         </div>
         <div class="tier-card" style="border-top:3px solid #EA3943">
           <div class="tag tr" style="margin-bottom:6px">Ultra</div>
-          <p>Sommet du marche. Precision maximale. Prix tres eleve, a reserver aux cas exceptionnels.</p>
+          <p>Sommet du marché. Précision maximale. Prix très élevé, à réserver aux cas exceptionnels.</p>
           <small>GPT-5.2 Pro</small>
         </div>
       </div>
@@ -413,7 +550,7 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
     <!-- ABONNEMENTS -->
     <div class="sub-section">
       <h3>Abonnements mensuels</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Acces interface chat — distinct des prix API ci-dessus</p>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Accès interface chat — distinct des prix API ci-dessus</p>
       <div class="sub-grid">
         <div class="sub-card">
           <div class="sub-logo" style="color:#D85A30">Anthropic - Claude</div>
@@ -442,7 +579,7 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
         <div class="sub-card">
           <div class="sub-logo" style="color:#58667E">DeepSeek</div>
           <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">Interface complete</div></div>
-          <div class="sub-plan"><div class="sub-pname">API only</div><div class="sub-pprice">Pay-as-you-go</div><div class="sub-pdesc">Pas d abonnement</div></div>
+          <div class="sub-plan"><div class="sub-pname">API only</div><div class="sub-pprice">Pay-as-you-go</div><div class="sub-pdesc">Pas d'abonnement</div></div>
         </div>
       </div>
     </div>
@@ -454,7 +591,7 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
 <div class="page" id="page-tokens">
   <div class="tok-page" id="tok-page-inner">
     <div class="tok-subnav" id="tok-subnav">
-      <button class="tok-tab active" data-sec="def" onclick="tokNav(this)">C est quoi ?</button>
+      <button class="tok-tab active" data-sec="def" onclick="tokNav(this)">C'est quoi ?</button>
       <button class="tok-tab" data-sec="io" onclick="tokNav(this)">Input vs Output</button>
       <button class="tok-tab" data-sec="volumes" onclick="tokNav(this)">Volumes reels</button>
       <button class="tok-tab" data-sec="couts" onclick="tokNav(this)">Les couts</button>
@@ -462,10 +599,10 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
     </div>
     <div class="tok-section" id="tok-def">
       <div class="slabel">Definition</div>
-      <h3>C est quoi un token ?</h3>
-      <p>Un token est le plus petit morceau de texte qu une IA peut traiter. Ce n est ni un mot entier, ni une lettre. <strong>1 token correspond environ a 3/4 d un mot en anglais</strong>, un peu moins en francais.</p>
+      <h3>C'est quoi un token ?</h3>
+      <p>Un token est le plus petit morceau de texte qu'une IA peut traiter. Ce n est ni un mot entier, ni une lettre. <strong>1 token correspond environ à 3/4 d'un mot en anglais</strong>, un peu moins en francais.</p>
       <div class="tok-vis">
-        <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Comment une phrase est decoupee en tokens</div>
+        <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Comment une phrase est découpée en tokens</div>
         <div style="font-size:12px;color:var(--text2);margin-bottom:8px">"Bonjour, comment puis-je vous aider ?" = 9 tokens</div>
         <div class="tok-pills"><span class="tp2 c1">Bon</span><span class="tp2 c2">jour</span><span class="tp2 c3">,</span><span class="tp2 c4">comment</span><span class="tp2 c5">puis</span><span class="tp2 c6">-je</span><span class="tp2 c1">vous</span><span class="tp2 c2">aider</span><span class="tp2 c3">?</span></div>
       </div>
@@ -529,11 +666,11 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
     </div>
     <div class="tok-section" id="tok-reduire" style="border-top:1px solid var(--border)">
       <div class="slabel">Optimisation</div>
-      <h3>Comment reduire tes couts</h3>
+      <h3>Comment réduire tes coûts</h3>
       <div class="cr-cards">
-        <div class="cr-card"><div class="cr-icon" style="background:var(--teal-bg)">&#9889;</div><div><div class="cr-title">Choisir le bon niveau</div><div class="cr-desc">Utiliser un modele Rapide pour les taches simples au lieu d un modele Puissant.</div></div><div class="cr-sv">-90%</div></div>
-        <div class="cr-card"><div class="cr-icon" style="background:var(--accent-bg)">&#9986;</div><div><div class="cr-title">Raccourcir ses instructions</div><div class="cr-desc">Des instructions concises reduisent l input. Evite de repeter le contexte.</div></div><div class="cr-sv">-30%</div></div>
-        <div class="cr-card"><div class="cr-icon" style="background:var(--amber-bg)">&#128207;</div><div><div class="cr-title">Limiter les reponses</div><div class="cr-desc">Demande "reponds en 3 points max". L output coute 3 a 8x plus que l input.</div></div><div class="cr-sv">-50%</div></div>
+        <div class="cr-card"><div class="cr-icon" style="background:var(--teal-bg)">&#9889;</div><div><div class="cr-title">Choisir le bon niveau</div><div class="cr-desc">Utiliser un modèle Rapide pour les tâches simples au lieu d'un modèle Puissant.</div></div><div class="cr-sv">-90%</div></div>
+        <div class="cr-card"><div class="cr-icon" style="background:var(--accent-bg)">&#9986;</div><div><div class="cr-title">Raccourcir ses instructions</div><div class="cr-desc">Des instructions concises réduisent l'input. Évite de répéter le contexte.</div></div><div class="cr-sv">-30%</div></div>
+        <div class="cr-card"><div class="cr-icon" style="background:var(--amber-bg)">&#128207;</div><div><div class="cr-title">Limiter les réponses</div><div class="cr-desc">Demande "réponds en 3 points max". L output coute 3 a 8x plus que l input.</div></div><div class="cr-sv">-50%</div></div>
         <div class="cr-card"><div class="cr-icon" style="background:var(--green-bg)">&#128230;</div><div><div class="cr-title">Traitement par lots</div><div class="cr-desc">Anthropic et OpenAI offrent -50% sur les traitements non-urgents en mode batch.</div></div><div class="cr-sv">-50%</div></div>
       </div>
       <div class="chart-box">
@@ -549,12 +686,12 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
   <div class="prm-wrap">
     <div class="prm-hero">
       <div class="slabel">Bibliotheque</div>
-      <h2>Prompts prets a l emploi</h2>
-      <p>52 prompts optimises sur 22 domaines. Filtre par IA ou par domaine, copie et adapte les parties entre [ ].</p>
+      <h2>Prompts prêts à l'emploi</h2>
+      <p>64 prompts optimisés sur 22 domaines. Filtre par IA ou par domaine, copie et adapte les parties entre [ ].</p>
     </div>
     <div style="position:relative;margin-bottom:12px">
       <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;pointer-events:none">&#128269;</span>
-      <input class="prm-search" id="prm-search" placeholder="Rechercher par titre, domaine ou mot-cle..." oninput="searchP(this.value)" style="padding-left:36px;margin-bottom:0">
+      <input class="prm-search" id="prm-search" placeholder="Rechercher par titre, domaine ou mot-clé..." oninput="searchP(this.value)" style="padding-left:36px;margin-bottom:0">
     </div>
     <div style="margin-bottom:6px">
       <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Filtrer par IA</div>
@@ -569,7 +706,7 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
   </div>
 </div>
 
-<footer>TokenWise - Prix sources officielles - Mars 2026</footer>
+<footer>TokenWise — Prix sources officielles — Avril 2026</footer>
 
 <script>
 var MODELS=[
@@ -620,6 +757,7 @@ function goPage(name){
   document.querySelectorAll(".nav-btn").forEach(function(b){b.classList.remove("active");});
   document.getElementById("page-"+name).classList.add("show");
   document.getElementById("btn-"+name).classList.add("active");
+  if(name==="landing"){}
   if(name==="tracker"){renderTS();renderT();}
   if(name==="tokens"&&!chartsOk){setTimeout(initCharts,100);chartsOk=true;}
   if(name==="prompts"){renderCats();renderIAs();renderPrompts();document.getElementById("prm-search").focus();}
@@ -1021,7 +1159,7 @@ function renderTS(){
     "<div class=\"stat\"><div class=\"slbl2\">Plus cher</div><div class=\"sval\">"+f(maxI)+"</div><div class=\"shint\">GPT-5.2 Pro</div></div>"+
     "<div class=\"stat\"><div class=\"slbl2\">Moyenne</div><div class=\"sval\">"+f(parseFloat(avg.toFixed(3)))+"</div><div class=\"shint\">par M tokens</div></div>"+
     "<div class=\"stat\"><div class=\"slbl2\">Ecart</div><div class=\"sval\">"+Math.round(maxI/minI)+"x</div><div class=\"shint\">min vs max</div></div>";
-  document.getElementById("t-time").textContent="Mis a jour: "+new Date().toLocaleString("fr-FR",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});
+  document.getElementById("t-time").textContent="Mis à jour : "+new Date().toLocaleString("fr-FR",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});
 }
 
 var IS2={tiny:80,small:550,medium:4500,large:32000};
@@ -1043,7 +1181,7 @@ function sp(el){
 }
 
 function runSim(){
-  if(!simSel.task||!simSel.volume||!simSel.isize||!simSel.quality){alert("Reponds aux 4 questions pour continuer.");return;}
+  if(!simSel.task||!simSel.volume||!simSel.isize||!simSel.quality){alert("Réponds aux 4 questions pour continuer.");return;}
   var tasks=Array.isArray(simSel.task)?simSel.task:[simSel.task];
   var volume=parseInt(simSel.volume);
   var quality=simSel.quality;
@@ -1179,6 +1317,17 @@ var PROMPTS=[
   {cat:"analyse",title:"Analyse document tres long",ia:"Gemini 2.5 Pro",level:"balanced",tok:"~50000 in / ~800 out",body:"Analyse ce tres long document et fournis:\n\n[COLLER LE DOCUMENT - JUSQU A 1 MILLION DE TOKENS]\n\n1. Resume en 5 points cles\n2. Informations les plus importantes\n3. Contradictions ou incohérences\n4. Points d action recommandes\n5. Questions restees sans reponse\n\nGemini 2.5 Pro peut lire jusqu a 1 million de tokens en une fois."},
   {cat:"code",title:"Refactoring base de code complete",ia:"Gemini 2.5 Pro",level:"balanced",tok:"~20000 in / ~5000 out",body:"Analyse et refactorise cette base de code:\n\n[COLLER TOUT LE CODE]\n\nObjectifs:\n1. Identifier les problemes de structure\n2. Proposer une architecture amelioree\n3. Corriger les bugs potentiels\n4. Optimiser les performances\n5. Livrer le code refactorise complet\n\nGemini 2.5 Pro excelle avec les grandes bases de code grace a sa fenetre de 1M tokens."},
   {cat:"voyage",title:"Guide voyage ultra-detaille",ia:"Gemini 2.5 Pro",level:"balanced",tok:"~300 in / ~2000 out",body:"Cree un guide de voyage complet pour:\n\nDestination: [PAYS / VILLE]\nDuree: [X JOURS]\nBudget: [MONTANT]\nInterets: [CULTURE / GASTRONOMIE / NATURE / NIGHTLIFE]\nLogement: [HOTEL / AIRBNB / HOSTEL]\n\nGuide detaille: meilleurs quartiers, top restaurants avec adresses, activites par jour, transports locaux, conseils pratiques, budget detaille par poste."}
+
+  ,
+  // ETUDIANTS
+  {cat:"etudiant",title:"Dissertation complète",ia:"Claude Sonnet 4.6",level:"balanced",tok:"~300 in / ~1500 out",body:"Rédige une dissertation sur ce sujet :\n\nSujet : [SUJET]\nNiveau : [LYCÉE / LICENCE / MASTER]\nMatière : [MATIÈRE]\nNombre de mots : [X MOTS]\nArguments que j'ai déjà : [TES IDÉES]\n\nStructure : introduction avec problématique, développement en 3 parties avec exemples, conclusion. Respecte le niveau académique demandé."},
+  {cat:"etudiant",title:"Présentation PowerPoint",ia:"Claude Sonnet 4.6",level:"balanced",tok:"~200 in / ~800 out",body:"Crée le plan détaillé d'une présentation PowerPoint :\n\nSujet : [SUJET]\nNombre de slides : [X SLIDES]\nDurée de présentation : [X MINUTES]\nPublic : [PROFESSEURS / JURY / CAMARADES]\n\nPour chaque slide : titre, 3-4 points clés à mentionner, suggestion visuelle (graphique, image, schéma). Inclure slide d'intro et de conclusion."},
+  {cat:"etudiant",title:"Résumé de cours pour réviser",ia:"Claude Haiku 4.5",level:"fast",tok:"~5000 in / ~600 out",body:"Fais un résumé de révision de ce cours :\n\n[COLLER LE COURS ICI]\n\nFormat :\n- Points clés à retenir (bullet points)\n- Définitions importantes\n- Schémas ou tableaux à mémoriser\n- Questions susceptibles de tomber à l'examen\n\nMax 1 page, clair et mémorisable."},
+  {cat:"etudiant",title:"Correction et amélioration de copie",ia:"Claude Sonnet 4.6",level:"balanced",tok:"~2000 in / ~800 out",body:"Corrige et améliore ce texte académique :\n\n[COLLER TON TEXTE]\n\nType : [DISSERTATION / RAPPORT / MÉMOIRE / EXPOSÉ]\nNiveau : [LYCÉE / LICENCE / MASTER]\n\nCorrige : fautes d'orthographe et de grammaire, tournures maladroites, structure des arguments, vocabulaire trop familier. Fournis la version corrigée avec explications des changements importants."},
+  {cat:"etudiant",title:"Explication d'un concept difficile",ia:"Claude Sonnet 4.6",level:"balanced",tok:"~150 in / ~400 out",body:"Explique-moi ce concept de façon simple :\n\nConcept : [NOM DU CONCEPT]\nMatière : [PHYSIQUE / MATHS / DROIT / ÉCO / AUTRE]\nMon niveau : [LYCÉE / L1 / L2 / L3 / MASTER]\n\nExplique avec :\n- Une définition simple\n- Une analogie de la vie quotidienne\n- Un exemple concret\n- Les erreurs fréquentes à éviter"},
+  {cat:"etudiant",title:"Plan de mémoire ou de rapport",ia:"Claude Opus 4.6",level:"powerful",tok:"~300 in / ~700 out",body:"Propose un plan détaillé pour mon mémoire :\n\nSujet : [SUJET DE RECHERCHE]\nNiveau : [LICENCE / MASTER / DOCTORAT]\nDiscipline : [DOMAINE]\nProblématique provisoire : [TA QUESTION DE RECHERCHE]\nNombre de pages attendu : [X PAGES]\n\nPropose : problématique affinée, plan en 3 parties avec sous-parties, bibliographie indicative, méthodologie recommandée."},
+  {cat:"etudiant",title:"Préparer un oral",ia:"Claude Sonnet 4.6",level:"balanced",tok:"~300 in / ~600 out",body:"Prépare-moi pour cet oral :\n\nSujet : [SUJET]\nDurée : [X MINUTES]\nFormat : [EXPOSÉ / SOUTENANCE / ENTRETIEN / ORAL DE CONCOURS]\nCe que je maîtrise : [TES POINTS FORTS]\nCe que je maîtrise moins : [TES POINTS FAIBLES]\n\nFournis : structure minute par minute, formulations d'accroche, transitions, réponses aux questions probables, conseils pour gérer le stress."},
+  {cat:"etudiant",title:"Traduction et compréhension de texte",ia:"DeepSeek V3",level:"balanced",tok:"~1000 in / ~600 out",body:"Traduis et explique ce texte académique :\n\n[TEXTE EN LANGUE ÉTRANGÈRE]\n\nLangue source : [ANGLAIS / ESPAGNOL / ALLEMAND / AUTRE]\n\nFournis :\n1. Traduction fluide en français\n2. Vocabulaire difficile avec définitions\n3. Résumé des idées principales en 5 lignes\n4. Contexte culturel si nécessaire"}
 ];
 
 var CATS=[
@@ -1203,7 +1352,8 @@ var CATS=[
   {id:"ecommerce",label:"E-commerce"},
   {id:"ia",label:"Utiliser l IA"},
   {id:"social",label:"Reseaux sociaux"},
-  {id:"logistique",label:"Logistique"}
+  {id:"logistique",label:"Logistique"},
+  {id:"etudiant",label:"Étudiants"}
 ];
 
 var LVL={fast:"Rapide",balanced:"Equilibre",powerful:"Puissant"};
@@ -1295,7 +1445,7 @@ window.addEventListener('load', function(){
 });
 setInterval(function(){
   var el=document.getElementById("t-time");
-  if(el){el.textContent="Mis a jour: "+new Date().toLocaleString("fr-FR",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});}
+  if(el){el.textContent="Mis à jour : "+new Date().toLocaleString("fr-FR",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});}
 },60000);
 </script>
 </body>
