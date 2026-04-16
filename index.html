@@ -266,9 +266,12 @@ textarea#ui::placeholder{color:var(--text3)}
 .prm-search-clear:hover{background:var(--border2);color:var(--text)}
 
 /* Filtres domaines - scroll horizontal */
-.prm-filter-section{margin-bottom:8px}
-.prm-ia-section{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+
 .prm-ia-label{font-size:11px;font-weight:700;color:var(--text3);white-space:nowrap;flex-shrink:0}
+.prm-scroll-btn{background:var(--bg2);border:1.5px solid var(--border);border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:16px;color:var(--text2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;line-height:1}
+.prm-scroll-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.prm-filter-section{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.prm-ia-section{display:flex;align-items:center;gap:6px;margin-bottom:14px}
 .prm-filter-scroll{display:flex;gap:5px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .prm-filter-scroll::-webkit-scrollbar{display:none}
 .pcat{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:inherit;font-weight:500;transition:all 0.15s;white-space:nowrap;flex-shrink:0}
@@ -715,15 +718,19 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
       <button class="prm-search-clear" id="prm-clear" onclick="clearSearch()" style="display:none">&#10005;</button>
     </div>
 
-    <!-- FILTRES DOMAINES - scroll horizontal sur mobile -->
+    <!-- FILTRES DOMAINES -->
     <div class="prm-filter-section">
+      <button class="prm-scroll-btn left" id="cats-left" onclick="scrollFilter('prm-cats',-150)">&#8249;</button>
       <div class="prm-filter-scroll" id="prm-cats"></div>
+      <button class="prm-scroll-btn right" id="cats-right" onclick="scrollFilter('prm-cats',150)">&#8250;</button>
     </div>
 
-    <!-- FILTRES IA - pills compactes -->
+    <!-- FILTRES IA -->
     <div class="prm-ia-section">
       <span class="prm-ia-label">IA :</span>
+      <button class="prm-scroll-btn left" onclick="scrollFilter('prm-ias',-150)">&#8249;</button>
       <div class="prm-filter-scroll" id="prm-ias"></div>
+      <button class="prm-scroll-btn right" onclick="scrollFilter('prm-ias',150)">&#8250;</button>
     </div>
 
     <!-- COMPTEUR ET RÉSULTATS -->
@@ -1411,6 +1418,10 @@ function filterP(btn){
   renderPrompts();
 }
 
+function scrollFilter(id,amount){
+  var el=document.getElementById(id);
+  if(el){el.scrollBy({left:amount,behavior:'smooth'});}
+}
 function searchP(q){
   searchQ=q.toLowerCase();
   var clearBtn=document.getElementById("prm-clear");
