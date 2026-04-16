@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TokenWise</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F8F7F4;--bg2:#FFFFFF;--bg3:#F0EEE8;
+  --border:#E2DED6;--border2:#C8C4BC;
+  --text:#1A1916;--text2:#6B6860;--text3:#A8A49C;
+  --accent:#2563EB;--accent2:#1D4ED8;--accent-bg:#EFF6FF;
+  --green:#059669;--green-bg:#ECFDF5;
+  --amber:#D97706;--amber-bg:#FFFBEB;
+  --red:#DC2626;--red-bg:#FEF2F2;
+  --purple:#7C3AED;--purple-bg:#F5F3FF;
+  --teal:#0891B2;--teal-bg:#ECFEFF;
+  --shadow:0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:0 4px 6px rgba(0,0,0,0.07);
+}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(248,247,244,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:0 1rem;display:flex;align-items:center;justify-content:space-between;height:54px}
+.logo{font-size:16px;font-weight:800;color:var(--accent);flex-shrink:0}
+.logo span{color:var(--text2);font-weight:500}
+.nav-links{display:flex;gap:2px;overflow-x:auto}
+.nav-btn{padding:5px 9px;border-radius:7px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;border:none;background:none;font-family:inherit;transition:all 0.15s;white-space:nowrap}
+.nav-btn:hover{color:var(--text);background:var(--bg3)}
+.nav-btn.active{color:var(--accent);background:var(--accent-bg)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.page{display:none;padding-top:54px;min-height:100vh}
+.page.show{display:block}
+.slabel{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.tag{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:600;display:inline-block}
+.tg{background:var(--green-bg);color:var(--green)}
+.tb{background:var(--accent-bg);color:var(--accent)}
+.ta{background:var(--amber-bg);color:var(--amber)}
+.tr{background:var(--red-bg);color:var(--red)}
+.tp{background:var(--purple-bg);color:var(--purple)}
+.tt{background:var(--teal-bg);color:var(--teal)}
+
+/* CONSEILLER */
+.adv-hero{padding:28px 1rem 20px;text-align:center;max-width:600px;margin:0 auto}
+.adv-hero h1{font-size:clamp(22px,4.5vw,40px);font-weight:800;line-height:1.1;margin-bottom:10px;letter-spacing:-0.5px}
+.adv-hero h1 em{color:var(--accent);font-style:normal}
+.adv-hero p{font-size:13px;color:var(--text2);line-height:1.7;max-width:400px;margin:0 auto}
+.chat-area{max-width:660px;margin:0 auto;padding:0 1rem 60px}
+.ex-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.ex-chip{padding:6px 12px;border-radius:18px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;transition:all 0.15s;font-family:inherit;box-shadow:var(--shadow)}
+.ex-chip:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.ibox{background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:13px;margin-bottom:10px;box-shadow:var(--shadow-md);transition:border-color 0.2s}
+.ibox:focus-within{border-color:var(--accent)}
+.irow{display:flex;gap:8px;align-items:flex-end}
+textarea#ui{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:inherit;font-size:13px;line-height:1.6;resize:none;min-height:64px;max-height:150px}
+textarea#ui::placeholder{color:var(--text3)}
+.iacts{display:flex;gap:5px}
+.mic-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s}
+.mic-btn.on{background:var(--red-bg);border-color:var(--red)}
+.mic-svg{width:14px;height:14px;stroke:var(--text2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mic-btn.on .mic-svg{stroke:var(--red)}
+.send-btn{width:36px;height:36px;border-radius:50%;border:none;background:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s}
+.send-btn:hover{background:var(--accent2)}
+.send-btn:disabled{background:var(--border)}
+.send-svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.vhint{font-size:11px;color:var(--text3);text-align:center;margin-bottom:12px}
+.thinking{display:none;align-items:center;gap:8px;padding:11px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:11px;margin-bottom:12px;font-size:13px;color:var(--text2);box-shadow:var(--shadow)}
+.thinking.show{display:flex}
+.spin{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.result{display:none;background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow-md)}
+.result.show{display:block}
+.rsumm{font-size:12px;color:var(--text2);line-height:1.7;background:var(--bg3);border-radius:9px;padding:11px 13px;margin-bottom:14px}
+.rsumm strong{color:var(--text)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:7px;margin-bottom:16px}
+.pc{background:var(--bg3);border-radius:9px;padding:9px 11px;text-align:center}
+.plbl{font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.pval{font-size:14px;font-weight:700;color:var(--accent)}
+.phint{font-size:10px;color:var(--text2);margin-top:1px}
+.rec-hdr{font-size:10px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.recs{display:grid;gap:7px;margin-bottom:14px}
+.rec{background:var(--bg3);border:1.5px solid var(--border);border-radius:11px;padding:11px 13px;display:grid;grid-template-columns:26px 1fr auto;gap:9px;align-items:center}
+.rec.best{border-color:var(--accent);background:var(--accent-bg)}
+.rn{font-size:13px;font-weight:700;color:var(--text3);text-align:center}
+.rn.g{color:var(--accent)}
+.rm{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.rp2{font-size:11px;color:var(--text2);margin-bottom:4px}
+.rtags{display:flex;flex-wrap:wrap;gap:3px}
+.rtag{font-size:10px;padding:1px 6px;border-radius:4px;background:var(--bg2);color:var(--text2);border:1px solid var(--border);font-weight:500}
+.rright{text-align:right;min-width:65px}
+.rcost{font-size:14px;font-weight:700;color:var(--accent)}
+.runit{font-size:10px;color:var(--text3)}
+.rsave{font-size:10px;color:var(--green);font-weight:600}
+.spec-note{font-size:11px;color:var(--purple);background:var(--purple-bg);border-radius:6px;padding:3px 8px;margin-top:6px;display:inline-block;font-weight:500}
+.bdown{background:var(--bg3);border-radius:9px;padding:12px;margin-bottom:12px}
+.bdt{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:8px}
+.brow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px}
+.brow:last-child{border:none;font-weight:700;color:var(--accent)}
+.brow span:first-child{color:var(--text2)}
+.brow span:last-child{font-family:monospace;font-weight:600}
+.btn-sec{background:none;border:1px solid var(--border);border-radius:9px;color:var(--text2);padding:8px 14px;font-family:inherit;font-size:12px;cursor:pointer}
+.btn-sec:hover{border-color:var(--border2);color:var(--text)}
+
+/* TRACKER */
+.trk-wrap{padding:22px 1rem 60px;max-width:1100px;margin:0 auto}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px;margin-bottom:18px}
+.stat{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:11px 13px;box-shadow:var(--shadow)}
+.slbl2{font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.sval{font-size:17px;font-weight:700;color:var(--text)}
+.shint{font-size:11px;color:var(--text2);margin-top:2px}
+.tier-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:7px;margin-bottom:18px}
+.tier-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:11px 13px;box-shadow:var(--shadow)}
+.tier-card h4{font-size:12px;font-weight:700;margin-bottom:3px}
+.tier-card p{font-size:11px;color:var(--text2);line-height:1.5}
+.tier-card small{font-size:10px;font-family:monospace;margin-top:3px;display:block;color:var(--text3)}
+.sub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:7px;margin-bottom:18px}
+.sub-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:13px;box-shadow:var(--shadow)}
+.sub-logo{font-size:12px;font-weight:700;margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.sub-plan{padding:6px 0;border-bottom:1px dashed var(--border)}
+.sub-plan:last-child{border:none}
+.sub-pname{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.sub-pprice{font-size:13px;font-weight:700;color:var(--text);font-family:monospace}
+.sub-pdesc{font-size:10px;color:var(--text2)}
+.ctrl{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:11px;align-items:center}
+.fc{padding:4px 11px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;font-family:inherit;font-weight:500;transition:all 0.15s}
+.fc:hover{border-color:var(--accent);color:var(--accent)}
+.fc.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:600}
+.sdd{padding:4px 10px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:11px;font-family:inherit;cursor:pointer;margin-left:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:8px 10px;font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;border-bottom:1.5px solid var(--border)}
+td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:hover td{background:var(--bg3)}
+.dot2{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle}
+.tier-t{font-size:10px;padding:2px 6px;border-radius:5px;font-weight:600;margin-left:4px;vertical-align:middle}
+.tf{background:var(--teal-bg);color:var(--teal)}
+.tba{background:var(--accent-bg);color:var(--accent)}
+.tpw{background:var(--amber-bg);color:var(--amber)}
+.tu{background:var(--red-bg);color:var(--red)}
+.mono{font-family:monospace;font-weight:600}
+.cstar{font-size:9px;background:var(--green-bg);color:var(--green);padding:1px 4px;border-radius:4px;font-weight:700;margin-left:3px}
+.mb{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;width:80px;border:1px solid var(--border)}
+.mbf{height:100%;border-radius:2px}
+
+/* SIMULATEUR */
+.sim-wrap{max-width:680px;margin:0 auto;padding:22px 1rem 60px}
+.sim-wrap h2{font-size:22px;font-weight:800;margin-bottom:6px;letter-spacing:-0.3px}
+.sim-wrap > p{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px}
+.sim-qs{display:grid;gap:11px;margin-bottom:18px}
+.sim-q{background:var(--bg2);border:1.5px solid var(--border);border-radius:13px;padding:15px;box-shadow:var(--shadow)}
+.sq-lbl{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.sq-hint{font-size:11px;color:var(--text2);margin-bottom:11px;line-height:1.5}
+.sim-opts{display:flex;flex-wrap:wrap;gap:5px}
+.sopt{padding:7px 13px;border-radius:18px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;font-family:inherit;font-weight:500;transition:all 0.15s;line-height:1.4;text-align:left}
+.sopt:hover{border-color:var(--accent);color:var(--accent)}
+.sopt.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:600}
+.sim-cta{background:var(--accent);color:#fff;border:none;border-radius:11px;padding:13px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;margin-bottom:18px;transition:all 0.15s}
+.sim-cta:hover{background:var(--accent2)}
+.sim-res{display:none;background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-md)}
+.sim-res.show{display:block}
+.sim-res-hdr{background:var(--green-bg);padding:13px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.sim-res-hdr h3{font-size:13px;font-weight:700;color:var(--green)}
+.sim-res-cost{font-size:20px;font-weight:800;color:var(--green);font-family:monospace}
+.res-tbl{width:100%;border-collapse:collapse}
+.res-tbl th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);padding:8px 13px;border-bottom:1.5px solid var(--border);text-align:left}
+.res-tbl td{padding:9px 13px;border-bottom:1px solid var(--border);font-size:12px}
+.res-tbl tr.br td{background:var(--accent-bg)}
+.res-tbl tr:last-child td{border:none}
+.cbar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;width:70px;margin-top:3px}
+.cbarf{height:100%;border-radius:2px;transition:width 0.4s}
+
+/* TOKENS */
+.tok-page{padding-top:54px}
+.tok-subnav{position:sticky;top:54px;z-index:99;background:rgba(248,247,244,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:0 1rem;display:flex;gap:0;overflow-x:auto}
+.tok-tab{padding:10px 14px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;border:none;background:none;font-family:inherit;white-space:nowrap;border-bottom:2.5px solid transparent;transition:all 0.15s;flex-shrink:0}
+.tok-tab:hover{color:var(--text)}
+.tok-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tok-section{padding:28px 1rem 40px;max-width:720px;margin:0 auto}
+.tok-section h3{font-size:18px;font-weight:800;margin-bottom:8px;letter-spacing:-0.3px}
+.tok-section > p{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:12px}
+.tok-section > p strong{color:var(--text)}
+.tok-vis{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.tok-pills{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.tp2{padding:4px 10px;border-radius:13px;font-size:12px;font-weight:600;border:1.5px solid}
+.tp2.c1{background:#EFF6FF;border-color:#93C5FD;color:#1D4ED8}
+.tp2.c2{background:#ECFDF5;border-color:#6EE7B7;color:#059669}
+.tp2.c3{background:#FEF3C7;border-color:#FCD34D;color:#D97706}
+.tp2.c4{background:#F5F3FF;border-color:#C4B5FD;color:#7C3AED}
+.tp2.c5{background:#FFF1F2;border-color:#FECDD3;color:#E11D48}
+.tp2.c6{background:#ECFEFF;border-color:#67E8F9;color:#0891B2}
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:7px;margin-bottom:14px}
+.edu-stat{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px;text-align:center;box-shadow:var(--shadow)}
+.edu-stat-val{font-size:19px;font-weight:800;color:var(--accent);margin-bottom:2px;font-family:monospace}
+.edu-stat-lbl{font-size:11px;color:var(--text2);line-height:1.4}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+@media(max-width:480px){.info-grid{grid-template-columns:1fr}}
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:13px;box-shadow:var(--shadow)}
+.info-card h4{font-size:12px;font-weight:700;margin-bottom:4px}
+.info-card p{font-size:11px;color:var(--text2);line-height:1.6}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.chart-title{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:12px}
+.flow-box{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.flow-steps{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0}
+.flow-step{text-align:center;padding:8px 10px;flex:1;min-width:80px}
+.flow-icon{width:38px;height:38px;border-radius:9px;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.flow-lbl{font-size:11px;font-weight:700;color:var(--text);margin-bottom:2px}
+.flow-sub{font-size:10px;color:var(--text2)}
+.flow-arr{font-size:14px;color:var(--text3);flex-shrink:0;align-self:center}
+.cr-cards{display:grid;gap:9px;margin-bottom:14px}
+.cr-card{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:13px 15px;display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;box-shadow:var(--shadow)}
+.cr-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.cr-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.cr-desc{font-size:11px;color:var(--text2);line-height:1.5}
+.cr-sv{font-size:15px;font-weight:800;color:var(--green);font-family:monospace;text-align:right;white-space:nowrap}
+.tip-box{background:var(--accent-bg);border:1.5px solid #93C5FD;border-radius:11px;padding:13px 15px;margin-bottom:14px}
+.tip-box h4{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.tip-box p{font-size:12px;color:var(--text2);line-height:1.6}
+.ref-table{width:100%;border-collapse:collapse;font-size:12px;background:var(--bg2);border-radius:11px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow)}
+.ref-table th{background:var(--bg3);padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);text-align:left;border-bottom:1px solid var(--border)}
+.ref-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text2)}
+.ref-table tr:last-child td{border:none}
+.ref-table td:nth-child(2),.ref-table td:nth-child(3){font-family:monospace;font-weight:600;color:var(--text)}
+
+/* PROMPTS */
+.prm-wrap{max-width:720px;margin:0 auto;padding:22px 1rem 60px}
+.prm-hero{margin-bottom:20px}
+.prm-hero h2{font-size:22px;font-weight:800;margin-bottom:5px;letter-spacing:-0.3px}
+.prm-hero p{font-size:13px;color:var(--text2);line-height:1.6}
+.prm-search{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:11px;font-family:inherit;font-size:13px;background:var(--bg2);color:var(--text);margin-bottom:12px;box-shadow:var(--shadow)}
+.prm-search:focus{outline:none;border-color:var(--accent)}
+.prm-search::placeholder{color:var(--text3)}
+.prm-cats{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.pcat{padding:5px 12px;border-radius:16px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;font-family:inherit;font-weight:500;transition:all 0.15s}
+.pcat:hover{border-color:var(--accent);color:var(--accent)}
+.pcat.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:600}
+.prm-count{font-size:12px;color:var(--text3);margin-bottom:10px}
+.prm-grid{display:grid;gap:9px}
+.prm-card{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:15px;box-shadow:var(--shadow)}
+.prm-card-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;gap:8px}
+.prm-title{font-size:13px;font-weight:700;color:var(--text)}
+.prm-meta{display:flex;gap:3px;flex-wrap:wrap;align-items:center;flex-shrink:0}
+.prm-body{font-size:11px;color:var(--text2);line-height:1.7;background:var(--bg3);border-radius:7px;padding:9px 11px;margin-bottom:9px;font-family:monospace;white-space:pre-wrap;word-break:break-word;max-height:160px;overflow:hidden;transition:max-height 0.3s}
+.prm-body.expanded{max-height:2000px}
+.prm-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.prm-stats{font-size:10px;color:var(--text3)}
+.prm-actions{display:flex;gap:5px}
+.copy-btn{padding:5px 12px;border-radius:7px;border:1.5px solid var(--accent);background:var(--accent-bg);color:var(--accent);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.copy-btn:hover{background:var(--accent);color:#fff}
+.copy-btn.copied{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.expand-btn{padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:11px;cursor:pointer;font-family:inherit}
+footer{text-align:center;padding:22px 1rem;border-top:1px solid var(--border);color:var(--text3);font-size:11px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Token<span>Wise</span></div>
+  <div class="nav-links">
+    <button class="nav-btn active" id="btn-advisor" onclick="goPage('advisor')">Conseiller</button>
+    <button class="nav-btn" id="btn-tracker" onclick="goPage('tracker')"><span class="dot"></span>Prix</button>
+    <button class="nav-btn" id="btn-simulator" onclick="goPage('simulator')">Simulateur</button>
+    <button class="nav-btn" id="btn-tokens" onclick="goPage('tokens')">Les tokens</button>
+    <button class="nav-btn" id="btn-prompts" onclick="goPage('prompts')">Prompts</button>
+  </div>
+</nav>
+
+<!-- CONSEILLER -->
+<div class="page show" id="page-advisor">
+  <div class="adv-hero">
+    <div class="slabel">Routing intelligent</div>
+    <h1>Trouve la <em>meilleure IA</em><br>pour ton besoin</h1>
+    <p>Decris ce que tu veux faire. On recommande le modele le plus adapte et le moins cher.</p>
+  </div>
+  <div class="chat-area">
+    <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px">Essaie un exemple</div>
+    <div class="ex-chips">
+      <div class="ex-chip" onclick="setEx('Resumer des contrats PDF, 50 pages, 100 par mois')">Resumer des contrats PDF, 50 pages, 100 par mois</div>
+      <div class="ex-chip" onclick="setEx('Chatbot pour mes clients, 500 messages par jour')">Chatbot pour mes clients, 500 messages par jour</div>
+      <div class="ex-chip" onclick="setEx('Extraire donnees de 2000 factures par mois')">Extraire donnees de 2000 factures par mois</div>
+      <div class="ex-chip" onclick="setEx('Creer une application web en Python')">Creer une application web en Python</div>
+    </div>
+    <div class="ibox">
+      <div class="irow">
+        <textarea id="ui" placeholder="Decris ce que tu veux faire..." rows="3" onkeydown="hk(event)"></textarea>
+        <div class="iacts">
+          <button class="mic-btn" id="mic-btn" onclick="toggleMic()">
+            <svg class="mic-svg" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </button>
+          <button class="send-btn" id="send-btn" onclick="doAnalyze()">
+            <svg class="send-svg" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="vhint" id="vhint">Appuie sur le micro pour parler</div>
+    <div class="thinking" id="thinking"><div class="spin"></div><span>Analyse en cours...</span></div>
+    <div class="result" id="result-block">
+      <div class="rsumm" id="rsumm"></div>
+      <div class="pgrid" id="pgrid"></div>
+      <div class="rec-hdr">Top 3 recommandations</div>
+      <div class="recs" id="recs"></div>
+      <div class="bdown" id="bdown"></div>
+      <button class="btn-sec" onclick="resetAdv()">Nouvelle demande</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRACKER -->
+<div class="page" id="page-tracker">
+  <div class="trk-wrap">
+    <div style="margin-bottom:18px">
+      <div class="slabel"><span class="dot"></span>En direct</div>
+      <div style="font-size:20px;font-weight:800;letter-spacing:-0.3px;margin-bottom:3px">Prix des tokens IA</div>
+      <div style="font-size:12px;color:var(--text2)">16 modeles - 5 fournisseurs - <span id="t-time">--</span></div>
+    </div>
+    <div class="stats-row" id="t-stats"></div>
+    <div style="margin-bottom:7px"><div class="slabel">Les 4 niveaux</div></div>
+    <div class="tier-legend">
+      <div class="tier-card"><div class="tag tt" style="margin-bottom:5px">Rapide</div><p>Taches simples et repetitives : classer, extraire, FAQ, chatbot. Tres economique.</p><small>Ex: Claude Haiku, GPT-5 nano, Gemini Flash</small></div>
+      <div class="tier-card"><div class="tag tb" style="margin-bottom:5px">Equilibre</div><p>Meilleur rapport qualite/prix. Redaction, resume, analyse standard, emails clients.</p><small>Ex: Claude Sonnet, GPT-4o, Gemini Pro</small></div>
+      <div class="tier-card"><div class="tag ta" style="margin-bottom:5px">Puissant</div><p>Raisonnement complexe, analyse juridique ou financiere, generation de code avance.</p><small>Ex: Claude Opus, GPT-5.2, DeepSeek R1</small></div>
+      <div class="tier-card"><div class="tag tr" style="margin-bottom:5px">Ultra</div><p>Sommet du marche. Precision maximale. Prix tres eleve - a reserver aux cas exceptionnels.</p><small>Ex: GPT-5.2 Pro</small></div>
+    </div>
+    <div style="margin-bottom:7px"><div class="slabel">Abonnements mensuels</div></div>
+    <div class="sub-grid" style="margin-bottom:20px">
+      <div class="sub-card"><div class="sub-logo" style="color:#2563EB">Anthropic - Claude</div>
+        <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">Usage limite</div></div>
+        <div class="sub-plan"><div class="sub-pname">Pro</div><div class="sub-pprice">18 EUR/mois</div><div class="sub-pdesc">Usage eleve + Opus</div></div>
+        <div class="sub-plan"><div class="sub-pname">Team</div><div class="sub-pprice">25 EUR/user/mois</div><div class="sub-pdesc">Collaboration</div></div>
+      </div>
+      <div class="sub-card"><div class="sub-logo" style="color:#059669">OpenAI - ChatGPT</div>
+        <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">GPT-4o mini</div></div>
+        <div class="sub-plan"><div class="sub-pname">Plus</div><div class="sub-pprice">20 EUR/mois</div><div class="sub-pdesc">GPT-4o + DALL-E</div></div>
+        <div class="sub-plan"><div class="sub-pname">Pro</div><div class="sub-pprice">200 EUR/mois</div><div class="sub-pdesc">Acces illimite</div></div>
+      </div>
+      <div class="sub-card"><div class="sub-logo" style="color:#D97706">Google - Gemini</div>
+        <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">Gemini standard</div></div>
+        <div class="sub-plan"><div class="sub-pname">Advanced</div><div class="sub-pprice">22 EUR/mois</div><div class="sub-pdesc">Ultra + 1To Drive</div></div>
+        <div class="sub-plan"><div class="sub-pname">Business</div><div class="sub-pprice">14 EUR/user/mois</div><div class="sub-pdesc">Workspace integre</div></div>
+      </div>
+      <div class="sub-card"><div class="sub-logo" style="color:#7C3AED">xAI - Grok</div>
+        <div class="sub-plan"><div class="sub-pname">X Premium</div><div class="sub-pprice">8 EUR/mois</div><div class="sub-pdesc">Grok basique</div></div>
+        <div class="sub-plan"><div class="sub-pname">SuperGrok</div><div class="sub-pprice">30 EUR/mois</div><div class="sub-pdesc">Grok avance</div></div>
+        <div class="sub-plan"><div class="sub-pname">SuperGrok Heavy</div><div class="sub-pprice">280 EUR/mois</div><div class="sub-pdesc">Modeles lourds</div></div>
+      </div>
+      <div class="sub-card"><div class="sub-logo" style="color:#6B6860">DeepSeek</div>
+        <div class="sub-plan"><div class="sub-pname">Gratuit</div><div class="sub-pprice">0 EUR/mois</div><div class="sub-pdesc">Interface complete</div></div>
+        <div class="sub-plan"><div class="sub-pname">API only</div><div class="sub-pprice">Pay-as-you-go</div><div class="sub-pdesc">Pas abonnement</div></div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <button class="fc on" data-p="all" onclick="filt(this)">Tous</button>
+      <button class="fc" data-p="Anthropic" onclick="filt(this)">Anthropic</button>
+      <button class="fc" data-p="OpenAI" onclick="filt(this)">OpenAI</button>
+      <button class="fc" data-p="Google" onclick="filt(this)">Google</button>
+      <button class="fc" data-p="xAI" onclick="filt(this)">xAI</button>
+      <button class="fc" data-p="DeepSeek" onclick="filt(this)">DeepSeek</button>
+      <select class="sdd" id="t-sort" onchange="renderT()">
+        <option value="ia">Input haut</option><option value="id">Input bas</option>
+        <option value="oa">Output haut</option><option value="pv">Fournisseur</option><option value="tr">Niveau</option>
+      </select>
+    </div>
+    <div style="overflow-x:auto;background:var(--bg2);border:1px solid var(--border);border-radius:11px;box-shadow:var(--shadow)">
+      <table><thead><tr><th>Modele</th><th>Fournisseur</th><th>Niveau</th><th>Input /M</th><th>Output /M</th><th>Ratio</th><th>Comparatif</th></tr></thead><tbody id="t-body"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- SIMULATEUR -->
+<div class="page" id="page-simulator">
+  <div class="sim-wrap">
+    <div class="slabel">Calcul de couts</div>
+    <h2>Combien ca va me couter ?</h2>
+    <p>Reponds aux questions ci-dessous. On calcule ton budget IA mensuel.</p>
+    <div class="sim-qs">
+      <div class="sim-q">
+        <div class="sq-lbl">1 - Que veux-tu faire ? <span class="tag tb" style="font-size:10px;margin-left:4px">Plusieurs choix possibles</span></div>
+        <div class="sq-hint">Coche tout ce qui correspond a ton usage</div>
+        <div class="sim-opts" data-g="task" data-multi="true">
+          <div class="sopt" data-v="chat" onclick="sp(this)">Repondre a des messages clients</div>
+          <div class="sopt" data-v="resume" onclick="sp(this)">Lire et resumer des documents</div>
+          <div class="sopt" data-v="extract" onclick="sp(this)">Extraire des infos de factures</div>
+          <div class="sopt" data-v="write" onclick="sp(this)">Rediger du contenu ou des emails</div>
+          <div class="sopt" data-v="code" onclick="sp(this)">Generer ou corriger du code</div>
+          <div class="sopt" data-v="analyze" onclick="sp(this)">Analyser des donnees complexes</div>
+          <div class="sopt" data-v="translate" onclick="sp(this)">Traduire des textes</div>
+          <div class="sopt" data-v="classify" onclick="sp(this)">Trier et classer des informations</div>
+        </div>
+      </div>
+      <div class="sim-q">
+        <div class="sq-lbl">2 - A quelle frequence ?</div>
+        <div class="sq-hint">Pense a ton usage sur un mois complet</div>
+        <div class="sim-opts" data-g="volume">
+          <div class="sopt" data-v="30" onclick="sp(this)">Quelques fois par semaine</div>
+          <div class="sopt" data-v="300" onclick="sp(this)">Plusieurs fois par jour au travail</div>
+          <div class="sopt" data-v="3000" onclick="sp(this)">Des centaines de fois par jour</div>
+          <div class="sopt" data-v="30000" onclick="sp(this)">Des milliers de fois par jour</div>
+          <div class="sopt" data-v="300000" onclick="sp(this)">Des dizaines de milliers par jour</div>
+        </div>
+      </div>
+      <div class="sim-q">
+        <div class="sq-lbl">3 - Taille du texte que tu envoies ?</div>
+        <div class="sq-hint">Le texte que toi tu donnes a chaque fois</div>
+        <div class="sim-opts" data-g="isize">
+          <div class="sopt" data-v="tiny" onclick="sp(this)">Un message court</div>
+          <div class="sopt" data-v="small" onclick="sp(this)">Un email ou une page</div>
+          <div class="sopt" data-v="medium" onclick="sp(this)">Un document de 5 a 20 pages</div>
+          <div class="sopt" data-v="large" onclick="sp(this)">Un long document de plus de 50 pages</div>
+        </div>
+      </div>
+      <div class="sim-q">
+        <div class="sq-lbl">4 - Quelle qualite as-tu besoin ?</div>
+        <div class="sq-hint">Plus la qualite est elevee, plus cela coute cher</div>
+        <div class="sim-opts" data-g="quality">
+          <div class="sopt" data-v="fast" onclick="sp(this)">Rapide et economique, quelques imprecisions ok</div>
+          <div class="sopt" data-v="balanced" onclick="sp(this)">Bonne qualite, livrable a un client</div>
+          <div class="sopt" data-v="powerful" onclick="sp(this)">Expertise maximale, zero erreur toleree</div>
+        </div>
+      </div>
+    </div>
+    <button class="sim-cta" onclick="runSim()">Calculer mon budget mensuel</button>
+    <div class="sim-res" id="sim-res">
+      <div class="sim-res-hdr">
+        <div><h3 id="sim-best-name">Meilleur choix</h3><div style="font-size:11px;color:var(--green);margin-top:1px" id="sim-best-sub"></div></div>
+        <div class="sim-res-cost" id="sim-best-cost">--</div>
+      </div>
+      <div style="overflow-x:auto"><table class="res-tbl"><thead><tr><th>#</th><th>Modele</th><th>Cout/mois</th><th>Economie</th><th>Comparatif</th></tr></thead><tbody id="sim-body"></tbody></table></div>
+      <div style="padding:11px 14px;border-top:1px solid var(--border)"><button class="btn-sec" onclick="resetSim()">Recommencer</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOKENS -->
+<div class="page" id="page-tokens">
+  <div class="tok-page" id="tok-page-inner">
+    <div class="tok-subnav" id="tok-subnav">
+      <button class="tok-tab active" data-sec="def" onclick="tokNav(this)">C est quoi ?</button>
+      <button class="tok-tab" data-sec="io" onclick="tokNav(this)">Input vs Output</button>
+      <button class="tok-tab" data-sec="volumes" onclick="tokNav(this)">Volumes reels</button>
+      <button class="tok-tab" data-sec="couts" onclick="tokNav(this)">Les couts</button>
+      <button class="tok-tab" data-sec="reduire" onclick="tokNav(this)">Reduire ses couts</button>
+    </div>
+    <div class="tok-section" id="tok-def">
+      <div class="slabel">Definition</div>
+      <h3>C est quoi un token ?</h3>
+      <p>Un token est le plus petit morceau de texte qu une IA peut traiter. Ce n est ni un mot entier, ni une lettre. <strong>1 token correspond environ a 3/4 d un mot en anglais</strong>, un peu moins en francais.</p>
+      <div class="tok-vis">
+        <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Comment une phrase est decoupee en tokens</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:8px">"Bonjour, comment puis-je vous aider ?" = 9 tokens</div>
+        <div class="tok-pills"><span class="tp2 c1">Bon</span><span class="tp2 c2">jour</span><span class="tp2 c3">,</span><span class="tp2 c4">comment</span><span class="tp2 c5">puis</span><span class="tp2 c6">-je</span><span class="tp2 c1">vous</span><span class="tp2 c2">aider</span><span class="tp2 c3">?</span></div>
+      </div>
+      <div class="stat-cards">
+        <div class="edu-stat"><div class="edu-stat-val">0.75</div><div class="edu-stat-lbl">mot par token en anglais</div></div>
+        <div class="edu-stat"><div class="edu-stat-val">700</div><div class="edu-stat-lbl">tokens par page A4</div></div>
+        <div class="edu-stat"><div class="edu-stat-val">300</div><div class="edu-stat-lbl">tokens par email</div></div>
+        <div class="edu-stat"><div class="edu-stat-val">40</div><div class="edu-stat-lbl">tokens par tweet</div></div>
+      </div>
+    </div>
+    <div class="tok-section" id="tok-io" style="border-top:1px solid var(--border)">
+      <div class="slabel">Facturation</div>
+      <h3>Input vs Output</h3>
+      <p>Toutes les IA facturent separement les tokens que tu envoies (input) et les tokens qu elles te renvoient (output). <strong>L output coute 3 a 8x plus cher</strong> que l input.</p>
+      <div class="info-grid">
+        <div class="info-card" style="border-color:#93C5FD"><h4 style="color:var(--accent)">Tokens INPUT</h4><p>Ta question, le document, le contexte. L IA le <strong>lit</strong>. Moins couteux.</p></div>
+        <div class="info-card" style="border-color:#6EE7B7"><h4 style="color:var(--green)">Tokens OUTPUT</h4><p>La reponse generee. L IA la cree <strong>token par token</strong>. 3 a 8x plus cher.</p></div>
+      </div>
+      <div class="flow-box">
+        <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:12px;text-align:center">Comment ca se passe</div>
+        <div class="flow-steps">
+          <div class="flow-step"><div class="flow-icon" style="background:var(--accent-bg)">&#9997;</div><div class="flow-lbl">Tu ecris</div><div class="flow-sub">Ton texte</div></div>
+          <div class="flow-arr">&#8594;</div>
+          <div class="flow-step"><div class="flow-icon" style="background:var(--amber-bg)">&#128290;</div><div class="flow-lbl">Decoupe</div><div class="flow-sub">En tokens</div></div>
+          <div class="flow-arr">&#8594;</div>
+          <div class="flow-step"><div class="flow-icon" style="background:var(--purple-bg)">&#129504;</div><div class="flow-lbl">Traite</div><div class="flow-sub">Par l IA</div></div>
+          <div class="flow-arr">&#8594;</div>
+          <div class="flow-step"><div class="flow-icon" style="background:var(--green-bg)">&#128228;</div><div class="flow-lbl">Repond</div><div class="flow-sub">Token/token</div></div>
+          <div class="flow-arr">&#8594;</div>
+          <div class="flow-step"><div class="flow-icon" style="background:var(--teal-bg)">&#128176;</div><div class="flow-lbl">Facture</div><div class="flow-sub">Input + Output</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="tok-section" id="tok-volumes" style="border-top:1px solid var(--border)">
+      <div class="slabel">Reference</div>
+      <h3>Combien de tokens dans la vraie vie ?</h3>
+      <table class="ref-table" style="margin-bottom:14px">
+        <thead><tr><th>Document</th><th>Tokens</th><th>Pages A4</th></tr></thead>
+        <tbody>
+          <tr><td>Un SMS court</td><td>~20</td><td>--</td></tr>
+          <tr><td>Un email standard</td><td>~300</td><td>0.4</td></tr>
+          <tr><td>Une page A4</td><td>~700</td><td>1</td></tr>
+          <tr><td>Un contrat 10 pages</td><td>~7 000</td><td>10</td></tr>
+          <tr><td>Un rapport 50 pages</td><td>~35 000</td><td>50</td></tr>
+          <tr><td>Un livre 300 pages</td><td>~200 000</td><td>300</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tok-section" id="tok-couts" style="border-top:1px solid var(--border)">
+      <div class="slabel">Couts</div>
+      <h3>Comprendre ce que tu paies</h3>
+      <p>Le prix varie enormement selon le modele et le type d usage.</p>
+      <div class="chart-box">
+        <div class="chart-title">Cout mensuel par type d usage - 5 000 requetes/mois (Claude Sonnet)</div>
+        <div style="position:relative;height:230px"><canvas id="chart-usage" role="img" aria-label="Cout par usage"></canvas></div>
+      </div>
+      <div class="tip-box">
+        <h4>La tendance de fond</h4>
+        <p>Les prix baissent de 40 a 70% par an depuis 2023. Ce qui coutait 30$/M tokens en 2023 coute aujourd hui moins de 2$/M.</p>
+      </div>
+    </div>
+    <div class="tok-section" id="tok-reduire" style="border-top:1px solid var(--border)">
+      <div class="slabel">Optimisation</div>
+      <h3>Comment reduire tes couts</h3>
+      <div class="cr-cards">
+        <div class="cr-card"><div class="cr-icon" style="background:var(--teal-bg)">&#9889;</div><div><div class="cr-title">Choisir le bon niveau</div><div class="cr-desc">Utiliser un modele Rapide pour les taches simples au lieu d un modele Puissant.</div></div><div class="cr-sv">-90%</div></div>
+        <div class="cr-card"><div class="cr-icon" style="background:var(--accent-bg)">&#9986;</div><div><div class="cr-title">Raccourcir ses instructions</div><div class="cr-desc">Des instructions concises reduisent l input. Evite de repeter le contexte.</div></div><div class="cr-sv">-30%</div></div>
+        <div class="cr-card"><div class="cr-icon" style="background:var(--amber-bg)">&#128207;</div><div><div class="cr-title">Limiter les reponses</div><div class="cr-desc">Demande "reponds en 3 points max". L output coute 3 a 8x plus que l input.</div></div><div class="cr-sv">-50%</div></div>
+        <div class="cr-card"><div class="cr-icon" style="background:var(--green-bg)">&#128230;</div><div><div class="cr-title">Traitement par lots</div><div class="cr-desc">Anthropic et OpenAI offrent -50% sur les traitements non-urgents en mode batch.</div></div><div class="cr-sv">-50%</div></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Impact des optimisations sur le cout mensuel</div>
+        <div style="position:relative;height:190px"><canvas id="chart-optim" role="img" aria-label="Impact optimisations"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROMPTS -->
+<div class="page" id="page-prompts">
+  <div class="prm-wrap">
+    <div class="prm-hero">
+      <div class="slabel">Bibliotheque</div>
+      <h2>Prompts prets a l emploi</h2>
+      <p>Des prompts optimises pour chaque metier. Copie et adapte les parties entre crochets.</p>
+    </div>
+    <input class="prm-search" id="prm-search" placeholder="Rechercher un prompt..." oninput="searchP(this.value)">
+    <div class="prm-cats" id="prm-cats"></div>
+    <div class="prm-count" id="prm-count"></div>
+    <div class="prm-grid" id="prm-grid"></div>
+  </div>
+</div>
+
+<footer>TokenWise - Prix sources officielles - Mars 2026</footer>
+
+<script>
+var MODELS=[
+  {p:"Anthropic",c:"#D85A30",n:"Claude Haiku 4.5",t:"fast",i:1.00,o:5.00,str:["Repetitif","Extraction","Chatbot"]},
+  {p:"Anthropic",c:"#D85A30",n:"Claude Sonnet 4.6",t:"balanced",i:3.00,o:15.00,str:["Code","Redaction","Analyse"]},
+  {p:"Anthropic",c:"#D85A30",n:"Claude Opus 4.6",t:"powerful",i:5.00,o:25.00,str:["Code complexe","Juridique","Raisonnement"]},
+  {p:"OpenAI",c:"#059669",n:"GPT-5 nano",t:"fast",i:0.05,o:0.40,str:["Ultra-economique","Classification"]},
+  {p:"OpenAI",c:"#059669",n:"GPT-5 mini",t:"fast",i:0.25,o:2.00,str:["Economique","Polyvalent"]},
+  {p:"OpenAI",c:"#059669",n:"GPT-4o",t:"balanced",i:1.25,o:5.00,str:["Vision","Multimodal"]},
+  {p:"OpenAI",c:"#059669",n:"GPT-5.2",t:"powerful",i:1.75,o:14.00,str:["Raisonnement","Recherche"]},
+  {p:"OpenAI",c:"#059669",n:"GPT-5.2 Pro",t:"ultra",i:21.00,o:168.00,str:["Meilleur marche"]},
+  {p:"Google",c:"#D97706",n:"Gemini 3 Flash",t:"fast",i:0.10,o:0.40,str:["Rapide","Economique"]},
+  {p:"Google",c:"#D97706",n:"Gemini 2.5 Flash",t:"fast",i:0.26,o:1.05,str:["Grand contexte","Economique"]},
+  {p:"Google",c:"#D97706",n:"Gemini 2.5 Pro",t:"balanced",i:1.25,o:10.00,str:["1M tokens","Multimodal"]},
+  {p:"Google",c:"#D97706",n:"Gemini 3.1 Pro",t:"powerful",i:2.00,o:12.00,str:["Recherche Google"]},
+  {p:"xAI",c:"#7C3AED",n:"Grok 4.1",t:"fast",i:0.20,o:0.50,str:["Actualite","Economique"]},
+  {p:"xAI",c:"#7C3AED",n:"Grok 4.1 Heavy",t:"powerful",i:3.00,o:15.00,str:["Raisonnement","Actualite"]},
+  {p:"DeepSeek",c:"#6B6860",n:"DeepSeek V3",t:"balanced",i:0.27,o:1.10,str:["Tres economique","Traduction"]},
+  {p:"DeepSeek",c:"#6B6860",n:"DeepSeek R1",t:"powerful",i:0.55,o:2.19,str:["Code","Maths","Tres economique"]}
+];
+var SPEC={
+  code:{best:["Claude Sonnet 4.6","Claude Opus 4.6","DeepSeek R1"],note:"Claude et DeepSeek R1 excellent en code"},
+  analyze:{best:["Claude Opus 4.6","DeepSeek R1","GPT-5.2"],note:"Claude Opus et DeepSeek R1 pour analyse complexe"},
+  resume:{best:["Claude Haiku 4.5","Gemini 2.5 Flash","GPT-5 nano"],note:"Modeles rapides suffisants pour resumer"},
+  extract:{best:["Claude Haiku 4.5","GPT-5 nano","Gemini 3 Flash"],note:"Tache simple: choisir le moins cher"},
+  write:{best:["Claude Sonnet 4.6","GPT-4o"],note:"Claude Sonnet et GPT-4o excellent en redaction"},
+  chat:{best:["Claude Haiku 4.5","GPT-5 mini","Gemini 3 Flash"],note:"Modeles rapides et economiques pour chatbot"},
+  translate:{best:["DeepSeek V3","Claude Haiku 4.5","GPT-5 mini"],note:"DeepSeek V3 meilleur rapport qualite/prix"},
+  classify:{best:["GPT-5 nano","Gemini 3 Flash","Claude Haiku 4.5"],note:"Les moins chers sont parfaits pour classifier"}
+};
+var TO={fast:0,balanced:1,powerful:2,ultra:3};
+var TL={fast:"Rapide",balanced:"Equilibre",powerful:"Puissant",ultra:"Ultra"};
+var TC={fast:"tf",balanced:"tba",powerful:"tpw",ultra:"tu"};
+var tfilt="all";
+var simSel={};
+var chartsOk=false;
+var favs=[];
+try{favs=JSON.parse(localStorage.getItem("tw_favs")||"[]");}catch(e){favs=[];}
+var currentCat="all";
+var searchQ="";
+
+function f(n){return n<0.01?"$"+n.toFixed(4):n<1?"$"+n.toFixed(3):"$"+n.toFixed(2);}
+function fb(n){return n>=1000?"$"+Math.round(n).toLocaleString("fr-FR"):"$"+n.toFixed(2);}
+function fn(n){return n>=1e6?(n/1e6).toFixed(1)+"M":n>=1000?(n/1000).toFixed(0)+"k":n.toLocaleString("fr-FR");}
+
+function goPage(name){
+  document.querySelectorAll(".page").forEach(function(p){p.classList.remove("show");});
+  document.querySelectorAll(".nav-btn").forEach(function(b){b.classList.remove("active");});
+  document.getElementById("page-"+name).classList.add("show");
+  document.getElementById("btn-"+name).classList.add("active");
+  if(name==="tracker"){renderTS();renderT();}
+  if(name==="tokens"&&!chartsOk){setTimeout(initCharts,100);chartsOk=true;}
+  if(name==="prompts"){renderPrompts();}
+}
+
+function initCharts(){
+  var gc="rgba(226,222,214,0.6)";
+  var tc="#A8A49C";
+  new Chart(document.getElementById("chart-usage"),{type:"bar",data:{
+    labels:["FAQ chatbot","Extraction","Traduction","Resume docs","Emails","Rapports","Analyse"],
+    datasets:[
+      {label:"Input",data:[9,60,90,280,25,90,90],backgroundColor:"rgba(37,99,235,0.65)",borderWidth:0,borderRadius:3},
+      {label:"Output",data:[25,12,90,42,250,180,180],backgroundColor:"rgba(5,150,105,0.65)",borderWidth:0,borderRadius:3}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tc,font:{size:10},boxWidth:12}}},scales:{
+    x:{stacked:true,ticks:{color:tc,font:{size:10}},grid:{color:gc}},
+    y:{stacked:true,ticks:{color:tc,font:{size:10},callback:function(v){return "$"+v;}},grid:{color:gc}}
+  }}});
+  new Chart(document.getElementById("chart-optim"),{type:"bar",indexAxis:"y",data:{
+    labels:["Aucune optim","Bon modele","+ Prompts courts","+ Reponses courtes","+ Batch mode"],
+    datasets:[{data:[1000,100,70,38,18],backgroundColor:["rgba(220,38,38,0.7)","rgba(217,119,6,0.7)","rgba(37,99,235,0.7)","rgba(5,150,105,0.7)","rgba(124,58,237,0.7)"],borderWidth:0,borderRadius:3}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{
+    x:{ticks:{color:tc,font:{size:10},callback:function(v){return "$"+v;}},grid:{color:gc}},
+    y:{ticks:{color:tc,font:{size:10}},grid:{color:"transparent"}}
+  }}});
+}
+
+function tokNav(btn){
+  document.querySelectorAll(".tok-tab").forEach(function(b){b.classList.remove("active");});
+  btn.classList.add("active");
+  var sec=document.getElementById("tok-"+btn.dataset.sec);
+  if(sec){var top=sec.getBoundingClientRect().top+window.scrollY-110;window.scrollTo({top:top,behavior:"smooth"});}
+}
+
+var recog=null;
+var listening=false;
+function toggleMic(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert("Utilisez Chrome pour la reconnaissance vocale.");return;}
+  if(listening){recog.stop();return;}
+  recog=new SR();
+  recog.lang="fr-FR";
+  recog.continuous=true;
+  recog.interimResults=true;
+  recog.onstart=function(){listening=true;document.getElementById("mic-btn").classList.add("on");document.getElementById("vhint").textContent="Ecoute... Parle maintenant";};
+  recog.onresult=function(e){var t="";for(var i=e.resultIndex;i<e.results.length;i++){t+=e.results[i][0].transcript;}document.getElementById("ui").value=t;};
+  recog.onerror=function(){listening=false;document.getElementById("mic-btn").classList.remove("on");};
+  recog.onend=function(){listening=false;document.getElementById("mic-btn").classList.remove("on");document.getElementById("vhint").textContent="Appuie sur le micro pour parler";};
+  recog.start();
+}
+
+function setEx(txt){document.getElementById("ui").value=txt;}
+function hk(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();doAnalyze();}}
+
+function analyzeLocal(txt){
+  var t=txt.toLowerCase();
+  var tp={
+    resume:["resum","synthes","condens"],
+    extract:["extrai","extraire","facture","donnee","data","champ"],
+    write:["redige","rediger","ecrire","rapport","article","email","lettre","contenu"],
+    code:["code","coder","programmer","script","fonction","api","bug","logiciel","application","python"],
+    analyze:["analys","audit","evaluer","comparer","financier","bilan","prevision"],
+    chat:["chatbot","chat","conversation","repondre","support","faq","assistant"],
+    translate:["tradui","traduire","langue","anglais","espagnol"],
+    classify:["classer","classifier","categoris","trier","filtrer"]
+  };
+  var ts={};
+  Object.keys(tp).forEach(function(k){
+    var s=0;
+    tp[k].forEach(function(p){if(t.indexOf(p)>=0){s++;}});
+    ts[k]=s;
+  });
+  var task="chat";
+  var best=0;
+  Object.keys(ts).forEach(function(k){if(ts[k]>best){best=ts[k];task=k;}});
+  var inputTok=600;
+  var pm=t.match(/(\d+)\s*page/);
+  if(pm){inputTok=Math.min(parseInt(pm[1])*700,50000);}
+  else if(t.indexOf("long")>=0){inputTok=5000;}
+  else if(t.indexOf("email")>=0||t.indexOf("message")>=0){inputTok=300;}
+  else if(t.indexOf("facture")>=0){inputTok=500;}
+  var om={resume:function(){return Math.max(150,Math.round(inputTok*0.12));},extract:function(){return 150;},write:function(){return Math.max(700,inputTok*0.8);},code:function(){return 1400;},analyze:function(){return 550;},chat:function(){return 230;},translate:function(){return Math.max(350,inputTok*0.85);},classify:function(){return 70;}};
+  var outputTok=om[task]?om[task]():380;
+  var volume=500;
+  var vp=[
+    {r:/(\d+)\s*fois?\s*(par|\/)\s*jour/,m:22},
+    {r:/(\d+)\s*fois?\s*(par|\/)\s*mois/,m:1},
+    {r:/(\d+)\s*(message|requete|document|facture|email)s?\s*(par|\/)\s*jour/,m:22},
+    {r:/(\d+)\s*(message|requete|document|facture|email)s?\s*(par|\/)\s*mois/,m:1}
+  ];
+  for(var pi=0;pi<vp.length;pi++){
+    var vm=t.match(vp[pi].r);
+    if(vm){volume=parseInt(vm[1])*vp[pi].m;break;}
+  }
+  if(volume<1){volume=500;}
+  if(volume>500000){volume=500000;}
+  var quality="fast";
+  var pw=["expert","precis","juridique","financier","audit","complexe"];
+  var bw=["bon","correct","rapport","client"];
+  pw.forEach(function(w){if(t.indexOf(w)>=0){quality="powerful";}});
+  if(quality==="fast"){bw.forEach(function(w){if(t.indexOf(w)>=0){quality="balanced";}});}
+  if(task==="analyze"||task==="code"){quality=quality==="fast"?"balanced":quality;}
+  var minO=TO[quality]||0;
+  var spec=SPEC[task];
+  var tIM=volume*inputTok/1e6;
+  var tOM=volume*outputTok/1e6;
+  var cands=MODELS.filter(function(m){return TO[m.t]>=minO;});
+  if(!cands.length){cands=MODELS.slice();}
+  cands=cands.map(function(m){
+    var ci=m.i*tIM;
+    var co=m.o*tOM;
+    var tot=ci+co;
+    var isSpec=spec&&spec.best.indexOf(m.n)>=0;
+    return {p:m.p,c:m.c,n:m.n,t:m.t,i:m.i,o:m.o,ci:ci,co:co,tot:tot,isSpec:isSpec,str:m.str};
+  }).sort(function(a,b){return (a.tot*(a.isSpec?0.92:1))-(b.tot*(b.isSpec?0.92:1));});
+  var maxC=Math.max.apply(null,cands.map(function(x){return x.tot;}));
+  var taskLbl={resume:"resume de documents",extract:"extraction de donnees",write:"redaction de contenu",code:"generation de code",analyze:"analyse et raisonnement",chat:"chatbot et conversation",translate:"traduction",classify:"classification"};
+  var wm={resume:["Gros input","Peu output","Rapide"],extract:["Precision","Output minimal","Economique"],write:["Output long","Qualite"],code:["Code","Precision"],analyze:["Raisonnement","Complexe"],chat:["Temps reel","Economique"],translate:["Fidelite","Nuance"],classify:["Volume","Minimal"]};
+  return {
+    summary:"<strong>Tache :</strong> "+taskLbl[task]+"<br><strong>Texte envoye :</strong> ~"+fn(inputTok)+" tokens/requete<br><strong>Reponse :</strong> ~"+fn(outputTok)+" tokens/requete<br><strong>Volume :</strong> ~"+volume.toLocaleString("fr-FR")+" requetes/mois",
+    inputTok:inputTok,outputTok:outputTok,volume:volume,quality:quality,task:task,
+    top3:cands.slice(0,3),maxC:maxC,wt:wm[task]||["Adapte","Economique"],spec:spec
+  };
+}
+
+function doAnalyze(){
+  var input=document.getElementById("ui").value.trim();
+  if(!input||input.length<5){alert("Decris un peu plus ta demande.");return;}
+  if(listening){recog.stop();}
+  document.getElementById("thinking").classList.add("show");
+  document.getElementById("result-block").classList.remove("show");
+  document.getElementById("send-btn").disabled=true;
+  fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({userMessage:input})})
+  .then(function(res){return res.json();})
+  .then(function(data){
+    if(data.error){throw new Error(data.error);}
+    var r=JSON.parse(data.result);
+    showAIResult(r);
+  })
+  .catch(function(){
+    var r=analyzeLocal(input);
+    showLocalResult(r);
+  });
+}
+
+function showAIResult(r){
+  document.getElementById("thinking").classList.remove("show");
+  document.getElementById("send-btn").disabled=false;
+  var tIM=r.volume_monthly*r.input_tokens/1e6;
+  var tOM=r.volume_monthly*r.output_tokens/1e6;
+  var allC=MODELS.map(function(m){return m.i*tIM+m.o*tOM;});
+  var maxC=Math.max.apply(null,allC);
+  document.getElementById("rsumm").innerHTML="<strong>Compris :</strong> "+r.summary+"<br><em style=\"font-size:11px;color:var(--text3)\">"+r.reasoning+"</em>";
+  document.getElementById("pgrid").innerHTML=
+    "<div class=\"pc\"><div class=\"plbl\">Input</div><div class=\"pval\">"+fn(r.input_tokens)+"</div><div class=\"phint\">tokens/req</div></div>"+
+    "<div class=\"pc\"><div class=\"plbl\">Output</div><div class=\"pval\">"+fn(r.output_tokens)+"</div><div class=\"phint\">tokens/req</div></div>"+
+    "<div class=\"pc\"><div class=\"plbl\">Volume</div><div class=\"pval\">"+fn(r.volume_monthly)+"</div><div class=\"phint\">req/mois</div></div>"+
+    "<div class=\"pc\"><div class=\"plbl\">Qualite</div><div class=\"pval\">"+TL[r.quality_needed]+"</div><div class=\"phint\">minimum</div></div>";
+  var recos=r.recommendations||[];
+  document.getElementById("recs").innerHTML=recos.map(function(rec,i){
+    var m=MODELS.find(function(x){return x.n===rec.model;})||MODELS[0];
+    var sv=maxC>0?((1-rec.monthly_cost/maxC)*100).toFixed(0):0;
+    return "<div class=\"rec"+(i===0?" best":"")+"\"><div class=\"rn"+(i===0?" g":"")+"\">"+(i===0?"&#9733;":i+1)+"</div>"+
+      "<div><div class=\"rm\">"+m.n+"</div><div class=\"rp2\">"+m.p+" - "+TL[m.t]+"</div>"+
+      "<div class=\"rtags\"><span class=\"rtag\">"+rec.why+"</span></div></div>"+
+      "<div class=\"rright\"><div class=\"rcost\">"+fb(rec.monthly_cost)+"</div><div class=\"runit\">par mois</div><div class=\"rsave\">-"+sv+"% vs pire</div></div></div>";
+  }).join("")+(r.specialty_note?"<div class=\"spec-note\" style=\"margin-top:6px\">"+r.specialty_note+"</div>":"");
+  var best=recos[0];
+  if(best){
+    var bm=MODELS.find(function(x){return x.n===best.model;})||MODELS[0];
+    document.getElementById("bdown").innerHTML="<div class=\"bdt\">Detail - "+bm.n+"</div>"+
+      "<div class=\"brow\"><span>Tokens input/req</span><span>"+fn(r.input_tokens)+"</span></div>"+
+      "<div class=\"brow\"><span>Tokens output/req</span><span>"+fn(r.output_tokens)+"</span></div>"+
+      "<div class=\"brow\"><span>Volume mensuel</span><span>"+r.volume_monthly.toLocaleString("fr-FR")+" req</span></div>"+
+      "<div class=\"brow\"><span>Cout input</span><span>"+fb(bm.i*tIM)+"</span></div>"+
+      "<div class=\"brow\"><span>Cout output</span><span>"+fb(bm.o*tOM)+"</span></div>"+
+      "<div class=\"brow\"><span>Total mensuel</span><span>"+fb(best.monthly_cost)+"</span></div>";
+  }
+  document.getElementById("result-block").classList.add("show");
+  document.getElementById("result-block").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function showLocalResult(r){
+  document.getElementById("thinking").classList.remove("show");
+  document.getElementById("send-btn").disabled=false;
+  document.getElementById("rsumm").innerHTML=r.summary;
+  document.getElementById("pgrid").innerHTML=
+    "<div class=\"pc\"><div class=\"plbl\">Input</div><div class=\"pval\">"+fn(r.inputTok)+"</div><div class=\"phint\">tokens/req</div></div>"+
+    "<div class=\"pc\"><div class=\"plbl\">Output</div><div class=\"pval\">"+fn(r.outputTok)+"</div><div class=\"phint\">tokens/req</div></div>"+
+    "<div class=\"pc\"><div class=\"plbl\">Volume</div><div class=\"pval\">"+fn(r.volume)+"</div><div class=\"phint\">req/mois</div></div>"+
+    "<div class=\"pc\"><div class=\"plbl\">Qualite</div><div class=\"pval\">"+TL[r.quality]+"</div><div class=\"phint\">minimum</div></div>";
+  var sn=r.spec?"<div class=\"spec-note\">"+r.spec.note+"</div>":"";
+  document.getElementById("recs").innerHTML=r.top3.map(function(m,i){
+    var sv=r.maxC>0?((1-m.tot/r.maxC)*100).toFixed(0):0;
+    return "<div class=\"rec"+(i===0?" best":"")+"\"><div class=\"rn"+(i===0?" g":"")+"\">"+(i===0?"&#9733;":i+1)+"</div>"+
+      "<div><div class=\"rm\">"+m.n+"</div><div class=\"rp2\">"+m.p+" - "+TL[m.t]+"</div>"+
+      "<div class=\"rtags\">"+r.wt.map(function(w){return "<span class=\"rtag\">"+w+"</span>";}).join("")+
+      m.str.slice(0,2).map(function(s){return "<span class=\"rtag\" style=\"color:var(--accent)\">"+s+"</span>";}).join("")+"</div></div>"+
+      "<div class=\"rright\"><div class=\"rcost\">"+fb(m.tot)+"</div><div class=\"runit\">par mois</div><div class=\"rsave\">-"+sv+"% vs pire</div></div></div>";
+  }).join("")+(sn?"<div style=\"margin-top:6px\">"+sn+"</div>":"");
+  var b=r.top3[0];
+  document.getElementById("bdown").innerHTML="<div class=\"bdt\">Detail - "+b.n+"</div>"+
+    "<div class=\"brow\"><span>Tokens input/req</span><span>"+fn(r.inputTok)+"</span></div>"+
+    "<div class=\"brow\"><span>Tokens output/req</span><span>"+fn(r.outputTok)+"</span></div>"+
+    "<div class=\"brow\"><span>Volume mensuel</span><span>"+r.volume.toLocaleString("fr-FR")+" req</span></div>"+
+    "<div class=\"brow\"><span>Cout input</span><span>"+fb(b.ci)+"</span></div>"+
+    "<div class=\"brow\"><span>Cout output</span><span>"+fb(b.co)+"</span></div>"+
+    "<div class=\"brow\"><span>Total mensuel</span><span>"+fb(b.tot)+"</span></div>";
+  document.getElementById("result-block").classList.add("show");
+  document.getElementById("result-block").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function resetAdv(){
+  document.getElementById("ui").value="";
+  document.getElementById("result-block").classList.remove("show");
+  document.getElementById("thinking").classList.remove("show");
+  document.getElementById("send-btn").disabled=false;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function filt(btn){
+  document.querySelectorAll(".fc").forEach(function(b){b.classList.remove("on");});
+  btn.classList.add("on");
+  tfilt=btn.dataset.p;
+  renderT();
+}
+
+function renderT(){
+  var s=document.getElementById("t-sort").value;
+  var d=tfilt==="all"?MODELS.slice():MODELS.filter(function(m){return m.p===tfilt;});
+  if(s==="ia"){d.sort(function(a,b){return a.i-b.i;});}
+  else if(s==="id"){d.sort(function(a,b){return b.i-a.i;});}
+  else if(s==="oa"){d.sort(function(a,b){return a.o-b.o;});}
+  else if(s==="pv"){d.sort(function(a,b){return a.p.localeCompare(b.p);});}
+  else if(s==="tr"){d.sort(function(a,b){return TO[a.t]-TO[b.t];});}
+  var maxI=Math.max.apply(null,MODELS.map(function(m){return m.i;}));
+  var minI=Math.min.apply(null,MODELS.map(function(m){return m.i;}));
+  document.getElementById("t-body").innerHTML=d.map(function(m){
+    var pct=maxI>minI?((m.i-minI)/(maxI-minI)*100).toFixed(0):50;
+    return "<tr><td><span class=\"dot2\" style=\"background:"+m.c+"\"></span>"+m.n+(m.i===minI?"<span class=\"cstar\">Moins cher</span>":"")+"</td>"+
+      "<td style=\"color:var(--text2)\">"+m.p+"</td><td><span class=\"tier-t "+TC[m.t]+"\">"+TL[m.t]+"</span></td>"+
+      "<td class=\"mono\">"+f(m.i)+"</td><td class=\"mono\">"+f(m.o)+"</td>"+
+      "<td class=\"mono\" style=\"color:var(--text2)\">"+(m.o/m.i).toFixed(1)+"x</td>"+
+      "<td><div class=\"mb\"><div class=\"mbf\" style=\"width:"+Math.max(2,pct)+"%;background:"+m.c+"\"></div></div></td></tr>";
+  }).join("");
+}
+
+function renderTS(){
+  var minI=Math.min.apply(null,MODELS.map(function(m){return m.i;}));
+  var maxI=Math.max.apply(null,MODELS.map(function(m){return m.i;}));
+  var avg=MODELS.reduce(function(s,m){return s+m.i;},0)/MODELS.length;
+  var ch=MODELS.find(function(m){return m.i===minI;});
+  var provs=[];
+  MODELS.forEach(function(m){if(provs.indexOf(m.p)<0){provs.push(m.p);}});
+  document.getElementById("t-stats").innerHTML=
+    "<div class=\"stat\"><div class=\"slbl2\">Modeles</div><div class=\"sval\">"+MODELS.length+"</div><div class=\"shint\">"+provs.length+" fournisseurs</div></div>"+
+    "<div class=\"stat\"><div class=\"slbl2\">Moins cher</div><div class=\"sval\">"+f(minI)+"</div><div class=\"shint\">"+ch.n+"</div></div>"+
+    "<div class=\"stat\"><div class=\"slbl2\">Plus cher</div><div class=\"sval\">"+f(maxI)+"</div><div class=\"shint\">GPT-5.2 Pro</div></div>"+
+    "<div class=\"stat\"><div class=\"slbl2\">Moyenne</div><div class=\"sval\">"+f(parseFloat(avg.toFixed(3)))+"</div><div class=\"shint\">par M tokens</div></div>"+
+    "<div class=\"stat\"><div class=\"slbl2\">Ecart</div><div class=\"sval\">"+Math.round(maxI/minI)+"x</div><div class=\"shint\">min vs max</div></div>";
+  document.getElementById("t-time").textContent="Mis a jour: "+new Date().toLocaleString("fr-FR",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});
+}
+
+var IS2={tiny:80,small:550,medium:4500,large:32000};
+var OM2={chat:220,resume:function(i){return Math.max(120,Math.round(i*0.12));},extract:130,write:function(i){return Math.max(550,i*0.75);},code:1300,analyze:500,translate:function(i){return Math.max(280,i*0.85);},classify:60};
+
+function sp(el){
+  var g=el.closest(".sim-opts").dataset.g;
+  var isMulti=el.closest(".sim-opts").dataset.multi==="true";
+  if(isMulti){
+    el.classList.toggle("on");
+    var selected=[];
+    el.closest(".sim-opts").querySelectorAll(".sopt.on").forEach(function(x){selected.push(x.dataset.v);});
+    simSel[g]=selected.length>0?selected:null;
+  } else {
+    el.closest(".sim-opts").querySelectorAll(".sopt").forEach(function(x){x.classList.remove("on");});
+    el.classList.add("on");
+    simSel[g]=el.dataset.v;
+  }
+}
+
+function runSim(){
+  if(!simSel.task||!simSel.volume||!simSel.isize||!simSel.quality){alert("Reponds aux 4 questions pour continuer.");return;}
+  var tasks=Array.isArray(simSel.task)?simSel.task:[simSel.task];
+  var volume=parseInt(simSel.volume);
+  var quality=simSel.quality;
+  var minO=TO[quality]||0;
+  var totalInputTok=0;
+  var totalOutputTok=0;
+  var allSpecs=[];
+  tasks.forEach(function(task){
+    var inputTok=IS2[simSel.isize];
+    var om=OM2[task];
+    var outputTok=typeof om==="function"?om(inputTok):om;
+    totalInputTok+=inputTok;
+    totalOutputTok+=outputTok;
+    var spec=SPEC[task];
+    if(spec){allSpecs=allSpecs.concat(spec.best);}
+  });
+  var avgInputTok=Math.round(totalInputTok/tasks.length);
+  var tIM=volume*avgInputTok/1e6;
+  var tOM=volume*totalOutputTok/1e6;
+  var d=MODELS.filter(function(m){return TO[m.t]>=minO;});
+  if(!d.length){d=MODELS.slice();}
+  d=d.map(function(m){
+    var tot=m.i*tIM+m.o*tOM;
+    var isSpec=allSpecs.indexOf(m.n)>=0;
+    return {p:m.p,c:m.c,n:m.n,t:m.t,tot:tot,isSpec:isSpec};
+  }).sort(function(a,b){return (a.tot*(a.isSpec?0.92:1))-(b.tot*(b.isSpec?0.92:1));});
+  var maxC=Math.max.apply(null,d.map(function(x){return x.tot;}));
+  var best=d[0];
+  var taskLbls={chat:"Chatbot",resume:"Resume",extract:"Extraction",write:"Redaction",code:"Code",analyze:"Analyse",translate:"Traduction",classify:"Classification"};
+  var taskStr=tasks.map(function(t){return taskLbls[t]||t;}).join(" + ");
+  document.getElementById("sim-best-name").textContent=best.n+" ("+best.p+")";
+  document.getElementById("sim-best-sub").textContent=TL[best.t]+" - "+taskStr+(best.isSpec?" - Specialiste":"");
+  document.getElementById("sim-best-cost").textContent=fb(best.tot)+"/mois";
+  document.getElementById("sim-body").innerHTML=d.map(function(m,i){
+    var pct=maxC>0?(m.tot/maxC*100).toFixed(0):0;
+    var sv=maxC>0?((1-m.tot/maxC)*100).toFixed(0):0;
+    return "<tr class=\""+(i===0?"br":"")+"\">"+
+      "<td style=\"font-weight:700;color:"+(i===0?"var(--accent)":"var(--text3)")+"\">"+(i===0?"&#9733;":i+1)+"</td>"+
+      "<td><span class=\"dot2\" style=\"background:"+m.c+"\"></span><span style=\"font-weight:"+(i===0?700:400)+";font-size:12px\">"+m.n+"</span>"+(m.isSpec?" <span class=\"tag tp\" style=\"font-size:9px\">Expert</span>":"")+"<div style=\"font-size:10px;color:var(--text3)\">"+m.p+" - "+TL[m.t]+"</div></td>"+
+      "<td style=\"font-weight:700;font-family:monospace;font-size:12px;color:"+(i===0?"var(--green)":"var(--text)")+"\">"+fb(m.tot)+"</td>"+
+      "<td style=\"font-weight:700;color:var(--green);font-size:11px\">-"+sv+"%</td>"+
+      "<td><div style=\"font-size:10px;color:var(--text3);margin-bottom:2px\">"+pct+"%</div><div class=\"cbar\"><div class=\"cbarf\" style=\"width:"+pct+"%;background:"+m.c+"\"></div></div></td></tr>";
+  }).join("");
+  document.getElementById("sim-res").classList.add("show");
+  document.getElementById("sim-res").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function resetSim(){
+  simSel={};
+  document.querySelectorAll(".sopt").forEach(function(x){x.classList.remove("on");});
+  document.getElementById("sim-res").classList.remove("show");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+var PROMPTS=[
+  {cat:"business",title:"Analyse de concurrents",ia:"Claude Sonnet",level:"balanced",tok:"~800 in / ~600 out",body:"Tu es un expert en strategie business. Analyse les concurrents suivants pour [NOM ENTREPRISE] qui vend [PRODUIT].\n\nConcurrents: [LISTE]\n\nPour chaque concurrent:\n1. Points forts\n2. Faiblesses\n3. Positionnement prix\n4. Ce qui me differencie\n\nConclus par 3 opportunites de marche."},
+  {cat:"business",title:"Plan action 30 jours",ia:"Claude Sonnet",level:"balanced",tok:"~400 in / ~700 out",body:"Cree un plan sur 30 jours pour:\n\nObjectif: [TON OBJECTIF]\nContexte: [SITUATION ACTUELLE]\nRessources: [TEMPS / BUDGET]\nContraintes: [LIMITES]\n\nFormat semaine par semaine avec: qui fait quoi, en combien de temps, comment mesurer le succes."},
+  {cat:"business",title:"Pitch investisseur 5 minutes",ia:"Claude Opus",level:"powerful",tok:"~500 in / ~800 out",body:"Redige un pitch de 5 minutes pour:\n\nEntreprise: [NOM]\nProduit: [DESCRIPTION]\nMarche: [QUI SONT TES CLIENTS]\nTraction: [CE QUE TU AS DEJA]\nBesoin: [MONTANT ET USAGE]\n\nStructure: probleme - solution - marche - modele - equipe - ask"},
+  {cat:"finance",title:"Resume rapport financier",ia:"Claude Haiku",level:"fast",tok:"~5000 in / ~400 out",body:"Voici un rapport financier. Resume en 5 points cles:\n\n[COLLER LE RAPPORT ICI]\n\nFormat:\n- Point 1: [element le plus important]\n- Points 2-5: ...\n- Alerte: [si quelque chose necessite attention urgente]\n- Action recommandee: [priorite numero 1]"},
+  {cat:"finance",title:"Extraction donnees facture",ia:"Claude Haiku",level:"fast",tok:"~600 in / ~150 out",body:"Extrais les informations de cette facture. Reponds UNIQUEMENT en JSON:\n\n[TEXTE DE LA FACTURE]\n\nJSON attendu:\n{\n  \"numero\": \"\",\n  \"date\": \"\",\n  \"fournisseur\": \"\",\n  \"montant_ht\": 0,\n  \"tva\": 0,\n  \"montant_ttc\": 0\n}"},
+  {cat:"finance",title:"Analyse de rentabilite",ia:"DeepSeek R1",level:"powerful",tok:"~800 in / ~600 out",body:"Analyse la rentabilite de ce projet:\n\nInvestissement: [MONTANT]\nCharges fixes: [MONTANT/MOIS]\nCharges variables: [MONTANT/UNITE]\nPrix de vente: [MONTANT]\nVolume prevu: [UNITE/MOIS]\n\nCalcule: point mort, marge brute, ROI 12 mois, ROI 36 mois. GO ou NO GO ?"},
+  {cat:"redaction",title:"Email professionnel persuasif",ia:"Claude Sonnet",level:"balanced",tok:"~200 in / ~350 out",body:"Ecris un email pour [OBJECTIF].\n\nDestinataire: [QUI]\nEntreprise: [NOM]\nObjectif: [OBJECTIF PRECIS]\nInfos cles: [DETAILS]\n\nMax 150 mots, ton chaleureux et professionnel, appel a action clair, objet accrocheur."},
+  {cat:"redaction",title:"Post LinkedIn engageant",ia:"GPT-4o",level:"balanced",tok:"~200 in / ~300 out",body:"Ecris un post LinkedIn sur:\n\nSujet: [SUJET]\nTon metier: [SECTEUR]\nMessage: [CE QUE TU VEUX TRANSMETTRE]\nCible: [QUI LIT TES POSTS]\n\nRegles: accroche forte, histoire courte, 3 points en bullet, question finale, 150-220 mots, 4-5 hashtags."},
+  {cat:"redaction",title:"Article blog SEO",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~1200 out",body:"Article de blog optimise SEO sur:\n\nSujet: [SUJET]\nMot-cle: [MOT-CLE]\nCible: [QUI VA LIRE]\nLongueur: 800 mots\n\nStructure: H1 accrocheur, intro hook, 3-4 sections H2, conclusion CTA, meta-description 155 caracteres."},
+  {cat:"code",title:"Generer du code Python",ia:"Claude Opus",level:"powerful",tok:"~300 in / ~800 out",body:"Tu es un developpeur Python senior. Ecris du code pour:\n\n[DESCRIPTION]\n\nContraintes:\n- Python 3.10+\n- Gestion des erreurs obligatoire\n- Docstrings pour chaque fonction\n- Exemple utilisation a la fin"},
+  {cat:"code",title:"Revue et correction de code",ia:"Claude Sonnet",level:"balanced",tok:"~1000 in / ~800 out",body:"Fais une revue de ce code:\n\n[COLLER TON CODE]\n\nAnalyse:\n1. Bugs et erreurs potentielles\n2. Failles de securite\n3. Performance\n4. Lisibilite\n5. Code corrige et ameliore"},
+  {cat:"code",title:"Expliquer du code complexe",ia:"DeepSeek R1",level:"powerful",tok:"~800 in / ~600 out",body:"Explique ce code clairement:\n\n[COLLER LE CODE]\n\nJe veux comprendre:\n1. Ce que fait ce code globalement\n2. Le role de chaque fonction\n3. Les parties complexes ligne par ligne\n4. Les risques potentiels\n\nNiveau: [DEBUTANT / INTERMEDIAIRE / AVANCE]"},
+  {cat:"analyse",title:"Analyse donnees chiffrees",ia:"DeepSeek R1",level:"powerful",tok:"~1000 in / ~600 out",body:"Analyse ces donnees:\n\n[COLLER LES DONNEES]\n\nJe veux:\n1. Les 3 tendances principales\n2. Les anomalies\n3. La metrique la plus importante\n4. 2 recommandations prioritaires\n\nBase-toi uniquement sur les donnees fournies."},
+  {cat:"analyse",title:"Comparaison deux options",ia:"DeepSeek V3",level:"balanced",tok:"~400 in / ~450 out",body:"Compare ces deux options:\n\nOption A: [DESCRIPTION]\nOption B: [DESCRIPTION]\nContexte: [TA SITUATION]\nPriorites: [CE QUI COMPTE]\n\nAvantages/inconvenients de chaque, dans quel cas choisir laquelle, ta recommandation finale. Sois direct."},
+  {cat:"client",title:"Reponse client mecontent",ia:"Claude Haiku",level:"fast",tok:"~300 in / ~220 out",body:"Message du client mecontent:\n\n\"[MESSAGE DU CLIENT]\"\n\nRedige une reponse qui:\n1. Reconnait le probleme\n2. Excuse sincerement\n3. Propose solution: [TA SOLUTION]\n4. Rassure sur la suite\n\nMax 100 mots, ton professionnel et empathique."},
+  {cat:"client",title:"FAQ produit automatisee",ia:"Claude Haiku",level:"fast",tok:"~700 in / ~180 out",body:"Tu es assistant de [ENTREPRISE] qui vend [PRODUIT].\n\nInfos: [DESCRIPTION]\nRemboursement: [POLITIQUE]\nLivraison: [DELAI]\nContact: [EMAIL]\n\nQuestion: [QUESTION]\n\nReponds: precis, max 80 mots, ton amical."},
+  {cat:"rh",title:"Offre emploi attractive",ia:"Claude Sonnet",level:"balanced",tok:"~400 in / ~700 out",body:"Offre emploi pour:\n\nPoste: [TITRE]\nEntreprise: [NOM]\nMissions: [LISTE]\nProfil: [COMPETENCES]\nAvantages: [CE QUE TU OFFRES]\nLieu: [LIEU / REMOTE]\n\nTon humain, pas corporatif. Section \"Ce qui nous rend differents\"."},
+  {cat:"rh",title:"Compte-rendu entretien",ia:"Claude Haiku",level:"fast",tok:"~1000 in / ~400 out",body:"Notes entretien avec [PRENOM] pour [POSTE]:\n\n[NOTES]\n\nCompte-rendu:\n1. Synthese du profil (3 phrases)\n2. Points forts\n3. Points de vigilance\n4. Adequation: Faible / Moyenne / Bonne / Excellente\n5. Recommandation: Passer en etape suivante ou Non"},
+  {cat:"juridique",title:"Resume de contrat",ia:"Claude Opus",level:"powerful",tok:"~8000 in / ~600 out",body:"Lis ce contrat et fais un resume simple:\n\n[COLLER LE CONTRAT]\n\nJe veux comprendre:\n1. Obligations de chaque partie\n2. Clauses importantes\n3. Risques potentiels\n4. Conditions de resiliation\n5. Ce qui semble inhabituel\n\nNote: ce resume est informatif, pas un avis juridique."},
+  {cat:"marketing",title:"Strategie contenu mensuelle",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~800 out",body:"Calendrier editorial pour le mois prochain:\n\nSecteur: [TON SECTEUR]\nCible: [QUI TU VISES]\nCanaux: [RESEAUX / BLOG / EMAIL]\nObjectif: [NOTORIETE / LEADS]\nFrequence: [POSTS PAR SEMAINE]\n\nPour chaque contenu: format, sujet, angle, CTA, heure publication."},
+  {cat:"immo",title:"Description bien immobilier",ia:"GPT-4o",level:"balanced",tok:"~300 in / ~350 out",body:"Description attractive pour:\n\nType: [APPARTEMENT / MAISON]\nSurface: [M2]\nLieu: [VILLE / QUARTIER]\nCaracteristiques: [PIECES / ETAGE]\nPoints forts: [ATOUTS]\nPrix: [MONTANT]\n\nMax 200 mots, accroche forte, mettre en valeur les atouts."},
+  {cat:"sante",title:"Plan nutritionnel",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~700 out",body:"Plan nutritionnel pour:\n\nObjectif: [PERTE DE POIDS / BIEN-ETRE]\nProfil: [AGE, SEXE, POIDS, TAILLE]\nActivite: [NIVEAU]\nRestrictions: [ALLERGIES]\nBudget: [HEBDOMADAIRE]\n\nPlan 7 jours avec repas et collations. Note: consulter un dieteticien pour suivi personnalise."},
+  {cat:"education",title:"Expliquer un concept",ia:"Claude Sonnet",level:"balanced",tok:"~150 in / ~500 out",body:"Explique [CONCEPT] simplement.\n\nPublic: [AGE / NIVEAU]\nContexte: [POURQUOI ILS EN ONT BESOIN]\n\nUtilise:\n- Une analogie quotidienne\n- Un exemple concret\n- Les 3 points essentiels\n- Une question pour verifier la comprehension\n\nMax 300 mots."},
+  {cat:"ecommerce",title:"Description produit optimisee",ia:"GPT-4o",level:"balanced",tok:"~300 in / ~400 out",body:"Description produit pour:\n\nProduit: [NOM ET CARACTERISTIQUES]\nPrix: [PRIX]\nClient: [QUI ACHETE]\nPlateforme: [AMAZON / SHOPIFY / AUTRE]\n\nInclure: titre SEO 60 car, description courte 50 mots, longue 150 mots, 5 bullet points benefices, mots-cles."},
+  {cat:"ecommerce",title:"Email panier abandonne",ia:"Claude Haiku",level:"fast",tok:"~200 in / ~200 out",body:"Email relance panier abandonne:\n\nProduit: [PRODUIT ET PRIX]\nDelai: [X HEURES]\nOffre: [REDUCTION / LIVRAISON GRATUITE / RIEN]\n\nMax 80 mots, urgence naturelle, CTA clair, objet accrocheur."},
+  {cat:"ia",title:"Prompt systeme assistant",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~500 out",body:"Prompt systeme pour un assistant IA:\n\nRole: [DESCRIPTION]\nEntreprise: [NOM ET SECTEUR]\nUtilisateur: [QUI VA UTILISER]\nTaches: [LISTE]\nTon: [FORMEL / AMICAL / EXPERT]\nLimites: [CE QU IL NE DOIT PAS FAIRE]\n\nDefinir: role, ton, capacites, limites, cas hors-perimetre."},
+  {cat:"ia",title:"Optimiser un prompt",ia:"Claude Opus",level:"powerful",tok:"~500 in / ~400 out",body:"Ameliore ce prompt:\n\nPrompt actuel: [TON PROMPT]\nResultat obtenu: [RESULTAT ACTUEL]\nResultat voulu: [RESULTAT IDEAL]\nIA utilisee: [CLAUDE / GPT / AUTRE]\n\nAnalyse les problemes et propose une version amelioree avec explications."},
+  {cat:"social",title:"Strategie Instagram mensuelle",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~700 out",body:"Strategie Instagram 30 jours:\n\nMarque: [DESCRIPTION]\nCible: [QUI TU VEUX ATTEINDRE]\nObjectif: [FOLLOWERS / ENGAGEMENT / VENTES]\nBudget: [TEMPS ET ARGENT]\n\nPlan par semaine: contenu, heures, hashtags, idees de posts."},
+  {cat:"social",title:"Legende Instagram",ia:"GPT-4o",level:"balanced",tok:"~200 in / ~250 out",body:"Legende Instagram pour:\n\nVisuel: [DESCRIPTION DU CONTENU]\nMessage: [CE QUE TU VEUX DIRE]\nTon: [HUMORISTIQUE / INSPIRANT / INFORMATIF]\nCible: [TON AUDIENCE]\n\n2 versions (courte 50 mots / longue 150 mots) + 10-15 hashtags."},
+  {cat:"logistique",title:"Optimisation de processus",ia:"DeepSeek R1",level:"powerful",tok:"~500 in / ~600 out",body:"Analyse ce processus:\n\nProcessus actuel: [DESCRIPTION ETAPE PAR ETAPE]\nProblemes: [GOULOTS / ERREURS]\nContraintes: [CE QUI NE PEUT PAS CHANGER]\nObjectif: [REDUIRE TEMPS / COUTS]\n\nPropose 3 ameliorations, gain estime, plan de mise en oeuvre."}
+];
+
+var CATS=[
+  {id:"all",label:"Tous"},
+  {id:"business",label:"Business"},
+  {id:"finance",label:"Finance"},
+  {id:"redaction",label:"Redaction"},
+  {id:"code",label:"Code"},
+  {id:"analyse",label:"Analyse"},
+  {id:"client",label:"Service client"},
+  {id:"rh",label:"RH"},
+  {id:"juridique",label:"Juridique"},
+  {id:"marketing",label:"Marketing"},
+  {id:"immo",label:"Immobilier"},
+  {id:"sante",label:"Sante"},
+  {id:"education",label:"Education"},
+  {id:"ecommerce",label:"E-commerce"},
+  {id:"ia",label:"Utiliser IA"},
+  {id:"social",label:"Reseaux sociaux"},
+  {id:"logistique",label:"Logistique"}
+];
+
+var LVL={fast:"Rapide",balanced:"Equilibre",powerful:"Puissant"};
+var LVL_CLS={fast:"tt",balanced:"tb",powerful:"ta"};
+
+function renderCats(){
+  document.getElementById("prm-cats").innerHTML=CATS.map(function(c){
+    return "<button class=\"pcat"+(c.id==="all"?" on":"")+"\" data-cat=\""+c.id+"\" onclick=\"filterP(this)\">"+c.label+"</button>";
+  }).join("");
+}
+
+function filterP(btn){
+  document.querySelectorAll(".pcat").forEach(function(b){b.classList.remove("on");});
+  btn.classList.add("on");
+  currentCat=btn.dataset.cat;
+  document.getElementById("prm-search").value="";
+  searchQ="";
+  renderPrompts();
+}
+
+function searchP(q){
+  searchQ=q.toLowerCase();
+  renderPrompts();
+}
+
+function renderPrompts(){
+  var list=PROMPTS.filter(function(p){
+    var catOk=currentCat==="all"||p.cat===currentCat;
+    var searchOk=!searchQ||(p.title.toLowerCase().indexOf(searchQ)>=0||p.body.toLowerCase().indexOf(searchQ)>=0);
+    return catOk&&searchOk;
+  });
+  document.getElementById("prm-count").textContent=list.length+" prompt"+(list.length>1?"s":"");
+  document.getElementById("prm-grid").innerHTML=list.map(function(p){
+    var idx=PROMPTS.indexOf(p);
+    return "<div class=\"prm-card\">"+
+      "<div class=\"prm-card-hdr\">"+
+        "<div class=\"prm-title\">"+p.title+"</div>"+
+        "<div class=\"prm-meta\">"+
+          "<span class=\"tag "+LVL_CLS[p.level]+"\">"+LVL[p.level]+"</span>"+
+          "<span class=\"tag\" style=\"background:var(--bg3);color:var(--text2)\">"+p.ia+"</span>"+
+        "</div>"+
+      "</div>"+
+      "<div class=\"prm-body\" id=\"pb"+idx+"\">"+p.body+"</div>"+
+      "<div class=\"prm-footer\">"+
+        "<div class=\"prm-stats\">"+p.tok+"</div>"+
+        "<div class=\"prm-actions\">"+
+          "<button class=\"expand-btn\" onclick=\"toggleExpand("+idx+",this)\">Voir tout</button>"+
+          "<button class=\"copy-btn\" onclick=\"copyPrm(this,"+idx+")\">Copier</button>"+
+        "</div>"+
+      "</div>"+
+    "</div>";
+  }).join("");
+}
+
+function toggleExpand(idx,btn){
+  var el=document.getElementById("pb"+idx);
+  if(el.classList.contains("expanded")){el.classList.remove("expanded");btn.textContent="Voir tout";}
+  else{el.classList.add("expanded");btn.textContent="Reduire";}
+}
+
+function copyPrm(btn,idx){
+  var txt=PROMPTS[idx].body;
+  function done(){btn.textContent="Copie !";btn.classList.add("copied");setTimeout(function(){btn.textContent="Copier";btn.classList.remove("copied");},2000);}
+  if(navigator.clipboard){navigator.clipboard.writeText(txt).then(done).catch(done);}
+  else{var ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);done();}
+}
+
+renderTS();
+renderT();
+renderCats();
+renderPrompts();
+setInterval(function(){
+  var el=document.getElementById("t-time");
+  if(el){el.textContent="Mis a jour: "+new Date().toLocaleString("fr-FR",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});}
+},60000);
+</script>
+</body>
+</html>
