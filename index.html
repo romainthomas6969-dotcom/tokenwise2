@@ -749,9 +749,10 @@ function showAIResult(r){
     "<div class=\"pc\"><div class=\"plbl\">Volume</div><div class=\"pval\">"+fn(r.volume_monthly)+"</div><div class=\"phint\">req/mois</div></div>"+
     "<div class=\"pc\"><div class=\"plbl\">Qualite</div><div class=\"pval\">"+TL[r.quality_needed]+"</div><div class=\"phint\">minimum</div></div>";
   var recos=r.recommendations||[];
+  var maxAICost=Math.max.apply(null,recos.map(function(x){return x.monthly_cost;}));
   document.getElementById("recs").innerHTML=recos.map(function(rec,i){
     var m=MODELS.find(function(x){return x.n===rec.model;})||MODELS[0];
-    var sv=maxC>0?((1-rec.monthly_cost/maxC)*100).toFixed(0):0;
+    var sv=maxAICost>0&&i>0?((1-rec.monthly_cost/maxAICost)*100).toFixed(0):0;
     return "<div class=\"rec"+(i===0?" best":"")+"\"><div class=\"rn"+(i===0?" g":"")+"\">"+(i===0?"&#9733;":i+1)+"</div>"+
       "<div><div class=\"rm\">"+m.n+"</div><div class=\"rp2\">"+m.p+" - "+TL[m.t]+"</div>"+
       "<div class=\"rtags\"><span class=\"rtag\">"+rec.why+"</span></div></div>"+
