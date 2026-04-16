@@ -530,7 +530,7 @@ footer{text-align:center;padding:22px 1rem;border-top:1px solid var(--border);co
     <div class="prm-hero">
       <div class="slabel">Bibliotheque</div>
       <h2>Prompts prets a l emploi</h2>
-      <p>Des prompts optimises pour chaque metier. Copie et adapte les parties entre crochets.</p>
+      <p>52 prompts optimises couvrant 22 domaines. Copie et adapte les parties entre crochets [ ].</p>
     </div>
     <input class="prm-search" id="prm-search" placeholder="Rechercher un prompt..." oninput="searchP(this.value)">
     <div class="prm-cats" id="prm-cats"></div>
@@ -1039,24 +1039,62 @@ var PROMPTS=[
   {cat:"social",title:"Strategie Instagram mensuelle",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~700 out",body:"Strategie Instagram 30 jours:\n\nMarque: [DESCRIPTION]\nCible: [QUI TU VEUX ATTEINDRE]\nObjectif: [FOLLOWERS / ENGAGEMENT / VENTES]\nBudget: [TEMPS ET ARGENT]\n\nPlan par semaine: contenu, heures, hashtags, idees de posts."},
   {cat:"social",title:"Legende Instagram",ia:"GPT-4o",level:"balanced",tok:"~200 in / ~250 out",body:"Legende Instagram pour:\n\nVisuel: [DESCRIPTION DU CONTENU]\nMessage: [CE QUE TU VEUX DIRE]\nTon: [HUMORISTIQUE / INSPIRANT / INFORMATIF]\nCible: [TON AUDIENCE]\n\n2 versions (courte 50 mots / longue 150 mots) + 10-15 hashtags."},
   {cat:"logistique",title:"Optimisation de processus",ia:"DeepSeek R1",level:"powerful",tok:"~500 in / ~600 out",body:"Analyse ce processus:\n\nProcessus actuel: [DESCRIPTION ETAPE PAR ETAPE]\nProblemes: [GOULOTS / ERREURS]\nContraintes: [CE QUI NE PEUT PAS CHANGER]\nObjectif: [REDUIRE TEMPS / COUTS]\n\nPropose 3 ameliorations, gain estime, plan de mise en oeuvre."}
+
+  ,
+  // IMMOBILIER
+  {cat:"immo",title:"Estimation valeur bien",ia:"Claude Sonnet",level:"balanced",tok:"~400 in / ~500 out",body:"Aide-moi a estimer la valeur de ce bien immobilier:\n\nType: [APPARTEMENT / MAISON / STUDIO]\nSurface: [M2]\nVille et quartier: [LIEU]\nEtat: [BON / MOYEN / A RENOVER]\nCaracteristiques: [ETAGE, BALCON, PARKING, etc.]\nPrix voisinage: [FOURCHETTE SI CONNU]\n\nFournis une estimation argumentee, les criteres qui font monter ou baisser le prix, et les points a negocier."},
+  {cat:"immo",title:"Email negociation prix",ia:"Claude Haiku",level:"fast",tok:"~200 in / ~250 out",body:"Redige un email de negociation pour baisser le prix de ce bien:\n\nBien: [DESCRIPTION]\nPrix demande: [MONTANT]\nPrix vise: [MONTANT]\nArguments: [TRAVAUX / MARCHE / DUREE VENTE]\n\nTon professionnel, arguments concrets, laisser la porte ouverte. Max 150 mots."},
+  {cat:"immo",title:"Analyse rentabilite locative",ia:"DeepSeek R1",level:"powerful",tok:"~400 in / ~600 out",body:"Calcule la rentabilite de cet investissement locatif:\n\nPrix achat: [MONTANT]\nFrais notaire: [MONTANT]\nTravaux: [MONTANT]\nLoyer mensuel prevu: [MONTANT]\nCharges mensuelles: [MONTANT]\nTaxe fonciere: [MONTANT/AN]\n\nCalcule: rentabilite brute, nette, cash-flow mensuel, duree avant rentabilite."},
+  // SPORT ET FITNESS
+  {cat:"sport",title:"Programme musculation 12 semaines",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~800 out",body:"Cree un programme musculation sur 12 semaines:\n\nObjectif: [PRISE DE MASSE / SECHE / FORCE]\nNiveau: [DEBUTANT / INTERMEDIAIRE / AVANCE]\nJours dispo: [X JOURS PAR SEMAINE]\nEquipement: [SALLE COMPLETE / HALTERES / SANS MATERIEL]\nPoints faibles: [ZONES A AMELIORER]\n\nProgramme semaine par semaine avec exercices, series, repetitions, temps de repos."},
+  {cat:"sport",title:"Plan nutrition sportive",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~600 out",body:"Plan nutritionnel pour sportif:\n\nObjectif: [PERFORMANCE / PRISE DE MASSE / PERTE DE POIDS]\nSport pratique: [TYPE ET FREQUENCE]\nPoids et taille: [DONNEES]\nAllergies: [AUCUNE / LISTE]\nBudget alimentaire: [SEMAINE]\n\nCalories et macros cibles, plan repas 5 jours, conseils pre et post entrainement."},
+  {cat:"sport",title:"Analyse performance sportive",ia:"DeepSeek R1",level:"powerful",tok:"~500 in / ~500 out",body:"Analyse mes donnees de performance:\n\nSport: [TYPE]\nDonnees recentes: [TEMPS / DISTANCE / POIDS / SERIES]\nObjectif vise: [PERFORMANCE CIBLE]\nDurée de pratique: [X MOIS / ANNEES]\n\nIdentifie les points forts, les blocages, et propose un plan pour progresser sur les 8 prochaines semaines."},
+  // VOYAGE
+  {cat:"voyage",title:"Itineraire voyage sur mesure",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~800 out",body:"Cree un itineraire de voyage:\n\nDestination: [PAYS / REGION]\nDuree: [X JOURS]\nBudget total: [MONTANT]\nType de voyage: [CULTUREL / NATURE / DETENTE / AVENTURE]\nVoyageurs: [SEUL / COUPLE / FAMILLE / AMIS]\nContraintes: [MOBILITE / REGIME / AUTRE]\n\nItineraire jour par jour avec activites, logements suggeres, budget estime par poste."},
+  {cat:"voyage",title:"Checklist voyage complete",ia:"Claude Haiku",level:"fast",tok:"~200 in / ~400 out",body:"Cree une checklist voyage pour:\n\nDestination: [PAYS]\nDuree: [X JOURS]\nType: [PLAGE / MONTAGNE / VILLE / TREK]\nSaison: [MOIS DU VOYAGE]\nVoyageurs: [ADULTES / ENFANTS / BEBE]\n\nOrganisee par categories: documents, vetements, medicaments, electronique, divers. Inclure les specifites de la destination."},
+  {cat:"voyage",title:"Email reclamation hotel",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~250 out",body:"Redige une reclamation a un hotel:\n\nProbleme: [DESCRIPTION DU PROBLEME]\nDuree sejour: [X NUITS]\nPrix paye: [MONTANT]\nCompensation demandee: [REMBOURSEMENT / GESTE / AUTRE]\n\nTon ferme mais professionnel, faits precis, demande claire. Max 200 mots."},
+  // CUISINE
+  {cat:"cuisine",title:"Recette avec ingredients disponibles",ia:"Claude Sonnet",level:"balanced",tok:"~200 in / ~500 out",body:"Propose une recette avec ces ingredients:\n\nIngredients dispo: [LISTE]\nTemps dispo: [X MINUTES]\nNombre de personnes: [X]\nRegime: [AUCUN / VEGETARIEN / SANS GLUTEN / AUTRE]\nNiveau cuisine: [DEBUTANT / INTERMEDIAIRE]\n\nRecette complete avec etapes detaillees, temps de cuisson, et astuces pour reussir."},
+  {cat:"cuisine",title:"Menu semaine equilibre",ia:"Claude Sonnet",level:"balanced",tok:"~200 in / ~700 out",body:"Cree un menu equilibre pour la semaine:\n\nPersonnes: [X ADULTES / ENFANTS]\nObjectif: [EQUILIBRE / PERTE DE POIDS / SPORTIF]\nBudget: [EUROS PAR SEMAINE]\nAliments a eviter: [LISTE]\nTemps cuisine: [MAX X MIN PAR REPAS]\n\nMenu 7 jours (dejeuner + diner), liste de courses complete, tips pour gagner du temps."},
+  {cat:"cuisine",title:"Description plat pour menu",ia:"GPT-4o",level:"balanced",tok:"~150 in / ~150 out",body:"Redige une description appétissante pour ce plat:\n\nNom du plat: [NOM]\nIngredients principaux: [LISTE]\nType de cuisine: [FRANCAISE / ITALIENNE / ASIATIQUE / AUTRE]\nRestaurant: [TYPE DE RESTO]\n\nMax 50 mots, evoquer les saveurs et textures, donner envie sans trop en dire."},
+  // COACHING ET DEVELOPPEMENT PERSONNEL
+  {cat:"coaching",title:"Plan objectifs SMART",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~600 out",body:"Transforme cet objectif vague en plan SMART:\n\nObjectif vague: [TON OBJECTIF]\nDelai souhaite: [X MOIS]\nRessources disponibles: [TEMPS / BUDGET / COMPETENCES]\nObstacles prevus: [CE QUI POURRAIT BLOQUER]\n\nObjectif SMART reformule, etapes concretes semaine par semaine, indicateurs de progres, plan B si blocage."},
+  {cat:"coaching",title:"Preparer un entretien d embauche",ia:"Claude Opus",level:"powerful",tok:"~500 in / ~700 out",body:"Prepare-moi pour cet entretien:\n\nPoste: [TITRE]\nEntreprise: [NOM ET SECTEUR]\nMon profil: [EXPERIENCE ET COMPETENCES]\nPoints faibles: [CE QUE JE MAITRISE MOINS]\n\nAnticipe les 10 questions les plus probables avec des reponses, comment valoriser mon profil, questions a poser au recruteur."},
+  {cat:"coaching",title:"Surmonter la procrastination",ia:"Claude Sonnet",level:"balanced",tok:"~200 in / ~500 out",body:"Aide-moi a surmonter ma procrastination sur:\n\nTache bloquante: [DESCRIPTION]\nDepuis quand je bloque: [DUREE]\nRaison probable: [PEUR / ENNUI / COMPLEXITE / PERFECTIONNISME]\nConsequences si je continue: [IMPACT]\n\nDiagnostic de la cause, techniques concretes adaptees, plan de 3 jours pour debloquer la situation."},
+  // TECH ET STARTUPS
+  {cat:"tech",title:"Specs fonctionnelles produit",ia:"Claude Opus",level:"powerful",tok:"~400 in / ~900 out",body:"Redige les specifications fonctionnelles pour:\n\nProduit: [NOM ET DESCRIPTION]\nUtilisateurs cibles: [PROFIL]\nFonctionnalites principales: [LISTE]\nContraintes techniques: [STACK / BUDGET / DELAI]\n\nDocument structure: contexte, personas utilisateurs, user stories, acceptance criteria, cas limites."},
+  {cat:"tech",title:"Strategie de lancement produit",ia:"Claude Sonnet",level:"balanced",tok:"~400 in / ~700 out",body:"Plan de lancement pour:\n\nProduit: [DESCRIPTION]\nCible: [QUI SONT LES PREMIERS UTILISATEURS]\nBudget marketing: [MONTANT]\nDelai: [DANS X SEMAINES]\nCanaux disponibles: [RESEAUX / EMAIL / PARTENAIRES]\n\nPlan J-30 a J+30: actions par semaine, KPIs a suivre, message cle, canaux prioritaires."},
+  {cat:"tech",title:"Analyse concurrentielle startup",ia:"DeepSeek R1",level:"powerful",tok:"~500 in / ~600 out",body:"Analyse concurrentielle pour ma startup:\n\nMon produit: [DESCRIPTION]\nMon positionnement: [PRIX / CIBLE / VALEUR AJOUTEE]\nConcurrents identifies: [LISTE]\n\nPour chaque concurrent: forces, faiblesses, positionnement prix, part de marche estimee. Conclure par mon avantage differentiel et les risques."},
+  // JURIDIQUE
+  {cat:"juridique",title:"Modele de CGV e-commerce",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~1200 out",body:"Redige des CGV pour mon e-commerce:\n\nActivite: [PRODUITS VENDUS]\nPays de vente: [FRANCE / UE / MONDE]\nDelai livraison: [X JOURS]\nPolitique retours: [X JOURS / CONDITIONS]\nPaiements acceptes: [CB / PAYPAL / VIREMENT]\n\nNote: ce modele est informatif, faire valider par un juriste."},
+  {cat:"juridique",title:"Lettre mise en demeure",ia:"Claude Sonnet",level:"balanced",tok:"~300 in / ~400 out",body:"Redige une mise en demeure:\n\nDestinataire: [NOM / ENTREPRISE]\nFaits: [CE QUI S EST PASSE]\nPrejudice: [MONTANT OU DOMMAGE]\nDelai accorde: [X JOURS]\nAction demandee: [REMBOURSEMENT / REPARATION / AUTRE]\n\nTon juridique ferme, faits dates et documentes, consequences en cas de non-reponse. Note: faire valider par un avocat."},
+  // FINANCE PERSONNELLE
+  {cat:"finance",title:"Budget mensuel personnel",ia:"Claude Haiku",level:"fast",tok:"~300 in / ~500 out",body:"Analyse mon budget et propose des optimisations:\n\nRevenus nets: [MONTANT]\nLoyer: [MONTANT]\nAlimentation: [MONTANT]\nTransports: [MONTANT]\nLoisirs: [MONTANT]\nAbonnements: [LISTE ET MONTANTS]\nEpargne actuelle: [MONTANT]\nObjectif epargne: [MONTANT VISE]\n\nAnalyse poste par poste, economies potentielles, plan pour atteindre l objectif."},
+  {cat:"finance",title:"Comprendre un placement",ia:"DeepSeek V3",level:"balanced",tok:"~200 in / ~400 out",body:"Explique-moi simplement ce placement:\n\nType: [LIVRET A / ASSURANCE VIE / ETF / SCPI / CRYPTO / AUTRE]\nMontant envisage: [MONTANT]\nHorizon: [X ANS]\nTolerance risque: [FAIBLE / MOYEN / ELEVE]\n\nExplique: comment ca marche, rendement historique, risques, fiscalite, pour qui c est adapte. Note: pas un conseil en investissement."}
+
 ];
 
 var CATS=[
-  {id:"all",label:"Tous"},
+  {id:"all",label:"Tous les prompts"},
   {id:"business",label:"Business"},
   {id:"finance",label:"Finance"},
   {id:"redaction",label:"Redaction"},
   {id:"code",label:"Code"},
   {id:"analyse",label:"Analyse"},
   {id:"client",label:"Service client"},
-  {id:"rh",label:"RH"},
+  {id:"rh",label:"Ressources humaines"},
   {id:"juridique",label:"Juridique"},
   {id:"marketing",label:"Marketing"},
   {id:"immo",label:"Immobilier"},
+  {id:"sport",label:"Sport et fitness"},
+  {id:"voyage",label:"Voyage"},
+  {id:"cuisine",label:"Cuisine"},
+  {id:"coaching",label:"Coaching perso"},
+  {id:"tech",label:"Tech et startups"},
   {id:"sante",label:"Sante"},
   {id:"education",label:"Education"},
   {id:"ecommerce",label:"E-commerce"},
-  {id:"ia",label:"Utiliser IA"},
+  {id:"ia",label:"Utiliser l IA"},
   {id:"social",label:"Reseaux sociaux"},
   {id:"logistique",label:"Logistique"}
 ];
