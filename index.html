@@ -239,7 +239,7 @@ textarea#ui::placeholder{color:var(--text3)}
 .prm-hero{margin-bottom:20px}
 .prm-hero h2{font-size:20px;font-weight:700;margin-bottom:5px}
 .prm-hero p{font-size:13px;color:var(--text2);line-height:1.6}
-.prm-search{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:var(--bg2);color:var(--text);margin-bottom:12px}
+.prm-search{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:var(--bg2);color:var(--text)}
 .prm-search:focus{outline:none;border-color:var(--accent)}
 .prm-search::placeholder{color:var(--text3)}
 .prm-cats{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
@@ -546,7 +546,10 @@ footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);co
       <h2>Prompts prets a l emploi</h2>
       <p>52 prompts optimises sur 22 domaines. Filtre par IA ou par domaine, copie et adapte les parties entre [ ].</p>
     </div>
-    <input class="prm-search" id="prm-search" placeholder="Rechercher un prompt..." oninput="searchP(this.value)">
+    <div style="position:relative;margin-bottom:12px">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;pointer-events:none">&#128269;</span>
+      <input class="prm-search" id="prm-search" placeholder="Rechercher par titre, domaine ou mot-cle..." oninput="searchP(this.value)" style="padding-left:36px;margin-bottom:0">
+    </div>
     <div style="margin-bottom:6px">
       <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Filtrer par IA</div>
       <div class="prm-cats" id="prm-ias"></div>
@@ -613,7 +616,7 @@ function goPage(name){
   document.getElementById("btn-"+name).classList.add("active");
   if(name==="tracker"){renderTS();renderT();}
   if(name==="tokens"&&!chartsOk){setTimeout(initCharts,100);chartsOk=true;}
-  if(name==="prompts"){renderPrompts();}
+  if(name==="prompts"){renderCats();renderIAs();renderPrompts();document.getElementById("prm-search").focus();}
 }
 
 function initCharts(){
