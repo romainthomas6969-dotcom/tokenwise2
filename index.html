@@ -756,7 +756,7 @@ function showAIResult(r){
     return "<div class=\"rec"+(i===0?" best":"")+"\"><div class=\"rn"+(i===0?" g":"")+"\">"+(i===0?"&#9733;":i+1)+"</div>"+
       "<div><div class=\"rm\">"+m.n+"</div><div class=\"rp2\">"+m.p+" - "+TL[m.t]+"</div>"+
       "<div class=\"rtags\"><span class=\"rtag\">"+rec.why+"</span></div></div>"+
-      "<div class=\"rright\"><div class=\"rcost\">"+fb(rec.monthly_cost)+"</div><div class=\"runit\">par mois</div><div class=\"rsave\">-"+sv+"% vs pire</div></div></div>";
+      "<div class=\"rright\"><div class=\"rcost\">"+fb(rec.monthly_cost)+"</div><div class=\"runit\">par mois</div><div class=\"rsave\">-"+sv+"% d'economie</div></div></div>";
   }).join("")+(r.specialty_note?"<div class=\"spec-note\" style=\"margin-top:6px\">"+r.specialty_note+"</div>":"");
   var best=recos[0];
   if(best){
@@ -789,7 +789,7 @@ function showLocalResult(r){
       "<div><div class=\"rm\">"+m.n+"</div><div class=\"rp2\">"+m.p+" - "+TL[m.t]+"</div>"+
       "<div class=\"rtags\">"+r.wt.map(function(w){return "<span class=\"rtag\">"+w+"</span>";}).join("")+
       m.str.slice(0,2).map(function(s){return "<span class=\"rtag\" style=\"color:var(--accent)\">"+s+"</span>";}).join("")+"</div></div>"+
-      "<div class=\"rright\"><div class=\"rcost\">"+fb(m.tot)+"</div><div class=\"runit\">par mois</div><div class=\"rsave\">-"+sv+"% vs pire</div></div></div>";
+      "<div class=\"rright\"><div class=\"rcost\">"+fb(m.tot)+"</div><div class=\"runit\">par mois</div><div class=\"rsave\">-"+sv+"% d'economie</div></div></div>";
   }).join("")+(sn?"<div style=\"margin-top:6px\">"+sn+"</div>":"");
   var b=r.top3[0];
   document.getElementById("bdown").innerHTML="<div class=\"bdt\">Detail - "+b.n+"</div>"+
